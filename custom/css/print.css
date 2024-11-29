@@ -1,0 +1,5 @@
+@media print {
+  #b { display: none; }
+  
+  .c {background:#CCFFCC;}
+}

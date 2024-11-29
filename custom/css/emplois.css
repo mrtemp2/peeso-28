@@ -1,0 +1,209 @@
+.lnd{
+
+ 
+}
+
+
+
+#addEmploiModelBtn,#addEmploiModelBtn2,#addEmploiModelBtn3,#addEmploiModelBtn4,#addEmploiModelBtn5,#addEmploiModelBtn6,#addEmploiModelBtn7,#addEmploiModelBtn8,#addEmploiModelBtn9,#addEmploiModelBtn10,#addEmploiModelBtn11,#addEmploiModelBtn12,#addEmploiModelBtn13,#addEmploiModelBtn14,#addEmploiModelBtn15,#addEmploiModelBtn16,#addEmploiModelBtn17,#addEmploiModelBtn18,#addEmploiModelBtn19,#addEmploiModelBtn20,#addEmploiModelBtn21,#addEmploiModelBtn22,#addEmploiModelBtn23,#addEmploiModelBtn24,#addEmploiModelBtn25,#addEmploiModelBtn26,#addEmploiModelBtn27,#addEmploiModelBtn28,#addEmploiModelBtn29,#addEmploiModelBtn30 {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	
+}
+
+.imprimer{
+background-color: #0000FF;
+color: #0000FF;
+width:500px;
+}
+
+#x{
+	background-color: #FEFEFE;
+}
+div.fixed {
+
+  bottom: 10px;
+
+} 
+
+#emplois{
+ text-align: left;
+ 
+}
+span.a {
+  display: inline; /* the default for span */
+
+  padding: 15px;
+
+
+}
+span.a1 {
+  display: inline; /* the default for span */
+
+  padding: 15px;
+
+
+}
+.vertical {
+      writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+div.c1 {
+  position: absolute;
+  left: auto;
+} 
+table tr{
+ border:1px!important;
+}
+tbody tr #h8, #h9, #h10, #h11, #h12, #h13, #h14, #h15, #h16, #h17{
+
+ text-align: center;
+ background-color: rgb(194, 192, 192);
+ width: 150px!important;
+ color:black;
+ font-size:10px;
+ font-weight: 700;
+ 
+}
+div.div.d2{
+text-align: left;
+ background-color: #DC143C;
+}
+
+#thl, #thm, #thme, #thj, #thv, #ths, #thd{
+
+ background-color: rgb(194, 192, 192) ;
+ width: 50px;
+    writing-mode: vertical-rl;
+    font-size:10px;
+    color:black;
+    font-weight: 700;
+}
+
+tbody tr :hover  {
+	color:white;
+	font-weight:bold;
+}
+/* 08:00 - 09:00*/
+tbody tr #l8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #m8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s8{background-color: #FFE4C4;width: 20px;font-size: small;height: 15px;text-align: left}
+/* 09:00 - 10:00 */
+tbody tr #l9{background-color: #f7bd7f;width: 20px;font-size: small; height: 15px;text-align: left}
+tbody tr #m9{background-color: #f7bd7f;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me9{background-color: #f7bd7f;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j9{background-color: #f7bd7f;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v9{background-color: #f7bd7f;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s9{background-color: #f7bd7f;width: 20px;font-size: small;height: 15px;text-align: left}
+/* 10:00 - 11:00 */
+tbody tr #l10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}; 
+tbody tr #m10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s10{background-color: #FFFF6B;width: 20px;font-size: small;height: 15px;text-align: left}
+/* 11:00 - 12:00 */
+tbody tr #l11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #m11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s11{background-color: #FAEA73;width: 20px;font-size: small;height: 15px;text-align: left}
+/* 12:00 - 13:00 */
+tbody tr #l12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #m12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s12{background-color: #B0F2B6;width: 20px;font-size: small;height: 15px;text-align: left}
+/* 13:00 - 14:00 */
+tbody tr #l13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #m13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #me13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #j13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #v13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+tbody tr #s13{background-color: #85C17E;width: 20px;font-size: small;height: 15px;text-align: left}
+
+/* hover*/
+/* 08:00 - 09:00*/
+tbody tr #h8:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s8:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+/* 09:00 - 10:00 */
+tbody tr #h9:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s9:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+/* 10:00 - 11:00 */
+tbody tr #h10:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s10:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+/* 11:00 - 12:00 */
+tbody tr #h11:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s11:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+/* 12:00 - 13:00 */
+tbody tr #h12:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s12:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+/* 13:00 - 14:00 */
+tbody tr #h13:hover{text-align: left;background-color: #A2B9B2;font-weight: bold;width: 25px;font-size: small;height: 15px;}
+tbody tr #l13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #m13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #me13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #j13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #v13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+tbody tr #s13:hover{background-color: #A2B9B2;width: 20px;font-size: small;text-align: left}
+
+table, th, td {
+ border: 1px solid  white!important;
+ 
+}
+td p{
+ width: 150px!important;
+ height: 21px;
+  text-align:center;
+  color:black;
+  font-size: 12px;
+  margin-top:10px!important;
+
+}
+table {
+ border-collapse: collapse;
+ border-spacing: 0;
+ width: 100%;
+ border: 1px solid #ddd;
+}
+
+table td, table th {
+ padding: 2px!important;
+}
+
+
+@media print{
+
+
+}
