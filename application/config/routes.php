@@ -68,4 +68,6 @@ $route['google_callback'] = 'Users/google_callback';
 $route['common/setEtabId'] = 'common/setEtabId';
 $route['users/fetchAdministrateurEtab'] = 'users/fetchAdministrateurEtab';
 
+$route['users/fetchAdministrateurEtab1'] = 'users/fetchAdministrateurEtab1';
+
 
