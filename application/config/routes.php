@@ -67,4 +67,3 @@ $route['dashboard'] = 'dashboard'; // Assurez-vous que cette route pointe vers v
 $route['google_callback'] = 'Users/google_callback';
 $route['common/setEtabId'] = 'common/setEtabId';
 $route['users/fetchAdministrateurEtab'] = 'users/fetchAdministrateurEtab';
-
