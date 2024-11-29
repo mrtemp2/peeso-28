@@ -1,5 +1,6 @@
 <style>
-
+    <?php $etabs = $this->model_etablissement->getAllActiveEtabs();
+    ?>
     .modal {
         --bs-modal-width: 800px !important;
     }
@@ -38,16 +39,22 @@
     <div class="modal-dialog login-page-form-area" role="document">
         <div class="modal-content" style="border:none !important;">
             <div class="modal-header" style="border-bottom:none !important;">
-                <h5 class="modal-title" id="exampleModalLabel">Modifier établissement</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Modifier Administrateur établissement</h5>
 
             </div>
             <div class="modal-body">
-                <form action="news/update_news" method="post" id="createStudentForm" enctype="multipart/form-data">
+                <form action="Users/update_User" method="post" id="createStudentForm" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="contact__input__wraper">
-                                <label for="edit_titre_fr">Titre :</label>
-                                <input type="text" id="edit_titre_fr" name="edit_titre_fr" placeholder='Ecrire Le Titre En Français'>
+                                <label for="edit_nom_fr">Nom :</label>
+                                <input type="text" id="edit_nom_fr" name="edit_nom_fr" placeholder='nom utilisateur'>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="contact__input__wraper">
+                                <label for="edit_pwd_fr">Mot de passe :</label>
+                                <input type="password" id="edit_pwd_fr" name="edit_pwd_fr" placeholder='mot de passe'>
                             </div>
                         </div>
                         <!-- <div class="col-xl-6">
@@ -56,37 +63,19 @@
                         <input type="text" id="edit_titre_en" name="edit_titre_en" placeholder='Ecrire Le Titre En Anglais'>
                         </div>
                     </div> -->
-                        <div class="col-xl-12">
-                            <div class="contact__input__wraper">
-                                <label for="edit_titre_en">Image :</label>
-                                <div style="
-                                border: 0.1px solid #dddddd;
-                                margin: 0 0 30px 0;
-                                border-radius: 5px;
-                                padding: 20px;
-                            ">
-                                    <div class="course-thumbnail-upload-area">
-                                        <div class="thumbnail-area" style="height:100px">
-                                            <img id="user-photo" style="max-height:100%" src="<?= base_url() . "public/new/images/dashboard/05.png" ?>" alt="competition_photo">
-                                        </div>
-                                        <div class="information">
-                                            <span>Size: 700 X 430 Pixels</span><br>
-                                            <span>File Support: PNG, JPG, JPEG</span>
-                                            <div class="input-file-type-btn">
-                                                <input type="file" id="real-file" name="edit_image" hidden />
-                                                <button type="button" class="btn btn-primary" id="custom-button">Choisir Un Fichier</button>
-                                                <span id="custom-text">Aucun fichier choisit</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-xl-12">
                             <div class="contact__input__wraper">
                                 <label class="form-control-label" for="edit_content_fr">Contenu : </label>
-                                <textarea name="edit_content_fr" id="edit_content_fr" cols="30" rows="10" placeholder="Entrez votre Contenu En Français ici*"></textarea>
-                            </div>
+                                <select name="etab_id" id="etab_id">
+                                    <option value="">-- Select an Establishment --</option>
+                                    <?php foreach ($etabs as $etab): ?>
+                                        <option value="<?php echo htmlspecialchars($etab['id']); ?>">
+                                            <?php echo htmlspecialchars($etab['nom']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>                           
+                             </div>
                         </div>
                         <!-- <div class="col-xl-12">
                         <div class="contact__input__wraper">
@@ -216,29 +205,6 @@
         });
     });
 
-    function ViewSubject(module_id = null) {
-        $("#ViewSubjectModal").modal('show');
-
-        $.post("news/get_news/" + module_id).done(function(response) {
-            let data = JSON.parse(response)
-
-            const {
-                titre,
-                content,
-                created_at,
-                image
-            } = data
-            const base_url = "<?php echo base_url('/assets/assets/images'); ?>";
-
-            $('#title').html(titre)
-            $('#created_at').html(created_at)
-            $('#extract').html(content)
-            $('#image').attr('src', base_url + '/' + image)
-
-            //manageModuleTable.ajax.reload(null, false);
-        });
-    }
-
     function removeSubject(subjectId = null) {
 
         $("#messages").html('');
@@ -247,7 +213,7 @@
         if (subjectId) {
             $("#removeSubjectBtn").unbind('click').bind('click', function() {
                 $.ajax({
-                    url: 'news/removeNews/' + subjectId,
+                    url: 'Users/removeUser/' + subjectId,
                     type: 'post',
                     dataType: 'json',
                     success: function(response) {
@@ -275,13 +241,11 @@
 
         $("#updateSubjectModal").modal('show');
         $("#add-module-messages_update").html("")
-        $.post("news/get_news/" + module_id).done(function(data) {
+        $.post("Users/Get_user/" + module_id).done(function(data) {
             var jsonObject = JSON.parse(data);
-            $("#edit_titre_en").val(jsonObject['titre-en']);
-            $("#edit_titre_fr").val(jsonObject['titre']);
-            document.querySelector('#user-photo').setAttribute('src', 'assets/assets/images/' + jsonObject.image)
-            $('#edit_content_en').html(jsonObject['content-en'])
-            $('#edit_content_fr').html(jsonObject['content'])
+            $("#edit_nom_fr").val(jsonObject['username']);
+            $("#edit_pwd_fr").val(jsonObject['password']);
+            $("#etab_id").val(jsonObject['etab_id']);
         })
 
         $("#createStudentForm").unbind('submit').bind('submit', function(event) {
