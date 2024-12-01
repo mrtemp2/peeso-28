@@ -15,8 +15,16 @@ class Model_news extends CI_Model
     public function add_news($insert_data){
         return $this->db->insert('news', $insert_data);
     }
+    public function add_newsDept($insert_data){
+        return $this->db->insert('news', $insert_data);
+    }
     public function fetchDataNews(){
         return $this->db->select('titre,id')->get('news')->result_array();
+    }
+    public function fetchDataNewsDept($dept_id){
+        return $this->db->select('titre,id')
+                ->where('etab_id',$dept_id)
+                ->get('news')->result_array();
     }
     public function getNews($id){
         return $this->db->select('titre,titre-en,image,id,content,content-en,date(created_at) as created_at')->where('id',$id)->get('news')->row_array();
@@ -220,7 +228,46 @@ class Model_news extends CI_Model
             return ['success' => false, 'message' => validation_errors()];
         }
     }
-    public function fetchCompetitionDispo($page,$limit){
+    public function createCompetitionDept($photo)
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+    
+        // Form validation rules
+        $this->form_validation->set_rules('nom', 'Nom', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
+        $this->form_validation->set_rules(
+            'description', 
+            'Description', 
+            'trim|required|regex_match[/^[^<>]*$/]|min_length[10]|max_length[5000]'
+        );
+    
+        if ($this->form_validation->run() === true) {
+            // Ensure photo is a string (URL or file path) and not an array
+            if (is_array($photo)) {
+                // If $photo is an array (in case of an upload failure or incorrect handling), set it to an empty string or handle accordingly
+                $photo = isset($photo['file_name']) ? $photo['file_name'] : '';  // Get the file name from the array
+            }
+    
+            $insert_data = array(
+                'nom'         => $this->input->post('nom'),
+                'date_debut'  => $this->input->post('date_debut'),
+                'date_fin'    => $this->input->post('date_fin'),
+                'description' => $this->input->post('description'),
+                'photo'       => $photo,  // Ensure photo is a string value
+                'etab_id'     => $dept_id
+            );
+    
+            $query = $this->db->insert('competition', $insert_data);
+            if ($query) {
+                return ['success' => true, 'message' => "Compétition ajoutée avec succès"];
+            } else {
+                return ['success' => false, 'message' => "Erreur lors d'ajout de la compétition"];
+            }
+        } else {
+            return ['success' => false, 'message' => validation_errors()];
+        }
+    }
+    
+       public function fetchCompetitionDispo($page,$limit){
         $query = $this->db->select('*')
                           ->from('competition')
                           ->where('date(date_fin)>=date(CURRENT_DATE)');
@@ -262,13 +309,19 @@ class Model_news extends CI_Model
         } else {
             $error = $this->db->error(); // Get the database error
             log_message('error', 'Database Error: ' . $error['message']);
-            return false; // Return false when there's an error or no rows were affected
+            return $error['message']; // Return false when there's an error or no rows were affected
         }
 
     }
 
     public function fetchDataCompetitons(){
         return $this->db->select('*')->get('competition')->result_array();
+    }
+    public function fetchDataCompetitonsDept( $dept_id){
+        return $this->db->select('*')
+                ->where('etab_id', $dept_id)
+                ->get('competition')
+                ->result_array();
     }
     //my update on filtering Competitions for departements
     public function fetchDataCompetitons_etab($etab_id) {

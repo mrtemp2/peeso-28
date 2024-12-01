@@ -34,11 +34,11 @@ $students = $info['students'];
 <div class="modal-content bd-0 tx-14 loginarea__wraper" style="border:none !important;">
         
         <div class="modal-header login__heading" style="display: fi;">
-                            <h5 class="login__title">Ajouter Formation</h5>
+                            <h5 class="login__title">Ajouter Formation Departement</h5>
                             
         </div>
       
-        <form method="post" id="createFormationForm" action="<?=base_url()?>formation/createFormation" enctype="multipart/form-data" accept-charset="utf-8">
+        <form method="post" id="createFormationForm" action="<?=base_url()?>formation/createFormationEtab" enctype="multipart/form-data" accept-charset="utf-8">
             <div class="row" style="position:relative;min-height: 700px;overflow: hidden;">
                     <div class="row formstep" id="formstep-1" data-step="1">
                         <div class="col-xl-12">

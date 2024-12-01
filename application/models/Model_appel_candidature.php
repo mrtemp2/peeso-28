@@ -14,8 +14,11 @@ class Model_appel_candidature extends CI_Model
     {
         $this->form_validation->set_rules('nom','Nom','regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
         $this->form_validation->set_rules('sujet', 'Sujet', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
-        $this->form_validation->set_rules('description', 'Description', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\-@:/]+$/]');
-    
+        $this->form_validation->set_rules(
+            'description', 
+            'Description', 
+            'trim|required|regex_match[/^[^<>]*$/]|min_length[10]|max_length[5000]'
+        );    
         if ($this->form_validation->run() === true) {
             $domaines = $this->input->post('domaine');
             if (count($domaines) == 0) {
@@ -55,7 +58,57 @@ class Model_appel_candidature extends CI_Model
         }
     }
     
-
+    public function createNewAppelcandidatureDept($photo)
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id']; // Ensure 'dept_id' is set in session
+        
+        $this->form_validation->set_rules('nom','Nom','regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
+        $this->form_validation->set_rules('sujet', 'Sujet', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
+        $this->form_validation->set_rules(
+            'description', 
+            'Description', 
+            'trim|required|regex_match[/^[^<>]*$/]|min_length[10]|max_length[5000]'
+        );    
+        if ($this->form_validation->run() === true) {
+            $domaines = $this->input->post('domaine');
+            if (count($domaines) == 0) {
+                return ['success' => false, 'message' => 'Vous devez sélectionner au moins un domaine'];
+            }
+    
+            $insert_data = [
+                'nom'         => $this->input->post('nom'),
+                'sujet'       => $this->input->post('sujet'),
+                'date_debut'  => $this->input->post('date_debut'),
+                'date_fin'    => $this->input->post('date_fin'),
+                'domaine'     => '',
+                'description' => $this->input->post('description'),
+                'photo'       => $photo,
+                'etab_id'     => $dept_id  
+            ];
+    
+            $query = $this->db->insert('appel_a_candidature', $insert_data);
+    
+            if ($query) {
+                $insert_id = $this->db->insert_id();
+                $appel_domaine = [];
+    
+                foreach ($domaines as $t) {
+                    $appel_domaine[] = [
+                        'id_appel' => $insert_id,
+                        'id_domaine' => $t
+                    ];
+                }
+    
+                $this->db->insert_batch('appel_domaine', $appel_domaine);
+                return ['success' => true];
+            } else {
+                return ['success' => false, 'message' => "Erreur lors d'ajout de l'appel de candidature"];
+            }
+        } else {
+            return ['success' => false, 'message' => 'form validation'. validation_errors()];
+        }
+    }
+    
     public function getAppelcandidature(){
         $query = $this->db->select('ac.*, GROUP_CONCAT(d.nom SEPARATOR " | ") as domaines')
                           ->from('appel_a_candidature ac')
@@ -65,7 +118,16 @@ class Model_appel_candidature extends CI_Model
                           ->get();
         return $query->result_array();
     }
-    
+    public function getAppelcandidatureDept($dept_id){
+        $query = $this->db->select('ac.*, GROUP_CONCAT(d.nom SEPARATOR " | ") as domaines')
+                          ->from('appel_a_candidature ac')
+                          ->join('appel_domaine ad', 'ac.id = ad.id_appel')
+                          ->join('domaine d', 'd.id = ad.id_domaine')
+                          ->where('ac.etab_id',$dept_id)
+                          ->group_by('ac.id') // Group by appel id to combine domaines
+                          ->get();
+        return $query->result_array();
+    }
 
     public function getAlldomaines(){
         $query = $this->db->select('*')->from('domaine')->get();
@@ -104,11 +166,13 @@ class Model_appel_candidature extends CI_Model
     public function updateAppelData($id, $photo)
     {
         // Validation rules for form inputs
-        $this->form_validation->set_rules('editnom','Nom','regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
+        $this->form_validation->set_rules('editnom', 'Nom', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
         $this->form_validation->set_rules('editsujet', 'Sujet', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\- ]+$/]');
-        // Uncomment if description validation is needed
-        $this->form_validation->set_rules('editdescription', 'Description', 'regex_match[/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9_\.\'\-@:/]+$/]');
-    
+        $this->form_validation->set_rules(
+            'editdescription', 
+            'Description', 
+            'trim|required|regex_match[/^[^<>]*$/]|min_length[10]|max_length[5000]'
+        );
         if ($this->form_validation->run() === true) {
             // Data for updating appel
             $update_data_appel = array(
@@ -119,16 +183,24 @@ class Model_appel_candidature extends CI_Model
                 'description' => $this->input->post('editdescription'),
                 'photo'       => $photo
             );
-            
+    
             // Update the appel record
             $this->db->where('id', $id);
             $status_appel = $this->db->update('appel_a_candidature', $update_data_appel);
+    
+            if (!$status_appel) {
+                // Log and return DB error message if update fails
+                return [
+                    'success' => false,
+                    'error' => $this->db->error() // Captures last DB error
+                ];
+            }
     
             // Update domaines in the many-to-many relationship
             $domaines = $this->input->post('editdomaine');
             $this->db->where('id_appel', $id);
             $this->db->delete('appel_domaine');
-            
+    
             // Insert new domaines if they exist
             if (!empty($domaines)) {
                 foreach ($domaines as $d_id) {
@@ -139,11 +211,13 @@ class Model_appel_candidature extends CI_Model
                 }
             }
     
-            // Return true if the update was successful
-            return $status_appel;
+            return ['success' => true];
         } else {
-            // Validation failed, return false
-            return false;
+            // Validation failed, return error messages
+            return [
+                'success' => false,
+                'error' => validation_errors() // Get all validation error messages
+            ];
         }
     }
     

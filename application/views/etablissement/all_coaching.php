@@ -82,7 +82,7 @@ window.addEventListener('load',function() {
     
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '17%' },{ width: '18%' },{ width: '20%' }, { width: '20%' },{ width: '25%' }],
-        'ajax': 'coaching/fetchCoachingData',
+        'ajax': 'coaching/fetchCoachingDataDept',
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bInfo":false,  
        
@@ -123,7 +123,7 @@ window.addEventListener('load',function() {
 function ajouterCoaching(){
     let updateReferentForm
     overlayOn()
-    $('#createCoachingContent').load('<?=base_url()?>coaching/createCoachingContent',(complete)=>{
+    $('#createCoachingContent').load('<?=base_url()?>coaching/createCoachingContentDept',(complete)=>{
         
         setTimeout(()=>{
             

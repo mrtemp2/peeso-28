@@ -63,7 +63,7 @@ class Formation extends CI_Controller
                 'nom'=>$this->input->post('nom'),
                 'date_debut'=>$this->input->post('date_debut'),
                 'date_fin'=>$this->input->post('date_fin'),
-                'referent_id'=>$this->input->post('referent_id')
+                'referent_id'=>$this->input->post('referent_id'),
              ];
             if ($this->form_validation->run() === true) {
                 $thumbnailfile = $_FILES['thumbnail'];
@@ -98,6 +98,75 @@ class Formation extends CI_Controller
 
 
     }
+    public function createFormationEtab(){
+        
+        $validator = array('success' => false, 'messages' => array());
+        $validate_data = array(
+            array(
+                'field' => 'nom',
+                'label' => 'Nom',
+                'rules' => 'required',
+            ),
+            array(
+                'field' => 'date_debut',
+                'label' => 'Date Début',
+                'rules' => 'required',
+            ),
+            array(
+                'field' => 'date_fin',
+                'label' => 'Date Fin',
+                'rules' => 'required',
+            ),
+           
+            array(
+                'field' => 'referent_id',
+                'label' => 'Référent',
+                'rules' => 'required',
+            ),
+         );
+        $this->form_validation->set_rules($validate_data);
+        $this->form_validation->set_error_delimiters('<p>', '</p>');
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+         $inserted_data = [
+            'nom'=>$this->input->post('nom'),
+            'date_debut'=>$this->input->post('date_debut'),
+            'date_fin'=>$this->input->post('date_fin'),
+            'referent_id'=>$this->input->post('referent_id'),
+            'etab_id'=>$dept_id
+         ];
+        if ($this->form_validation->run() === true) {
+            $thumbnailfile = $_FILES['thumbnail'];
+            if($thumbnailfile && isset($_FILES['thumbnail']['name']) && $_FILES['thumbnail']['name']){
+                $path = './assets/assets/images/'.$_FILES['thumbnail']['name'];
+                move_uploaded_file($_FILES['thumbnail']['tmp_name'], $path);
+                $inserted_data['thumbnail']= $_FILES['thumbnail']['name'];
+            }
+            $inserted_data['created_at'] = date('Y-m-d');
+            $created = $this->model_formation->createFormation($inserted_data);
+            if($created){
+                echo json_encode([
+                    'success'=>true,
+                    'message'=>'La Formation Est Crée avec succes'
+                ]);
+            }
+            else{
+                echo json_encode([
+                    'success'=>false,
+                    'message'=>'Echec De l\'insertion veuillez Réessayer'
+                ]);
+            }
+        
+        } else {
+                    $validator['success'] = false;
+                    foreach ($_POST as $key => $value) {
+                        $validator['message'] = form_error($key);
+                    }
+                }
+
+       
+
+
+}
 
     public function updateFormation($id){
       
@@ -198,6 +267,49 @@ class Formation extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
+    public function fetchFormationDataDept()
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id']; // Ensure 'dept_id' is set in session
+
+        $moduleData = $this->model_formation->fetchFormationDataDept($dept_id);
+        $result = array('data' => array());
+        foreach ($moduleData as $key => $value) {
+         
+            
+                    $actionButtons = '    
+           <div class="dashboard__button__group">
+                    <a href="'.base_url('update_formation_etab').'?formation_id='.$value['id'].'"  class="dashboard__small__btn__2" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Modifier</a>
+                        </div>
+
+                        ';
+                
+            
+            $progressButton = '<span class="dashboard__td dashboard__td--running">non publié</span> ';	
+               
+
+            $detailsButton = '<div>
+			<a class="action-button btn btn-primary" href="'.base_url('detail_formation').'?formation_id='.$value['id'].'">
+                                                       <i class="icofont-eye-open"></i>   </a></div>	 
+                                                       ';		
+          
+            
+
+            $result['data'][$key] = array(
+                $value['nom'],
+                $value['date_debut'],
+                $value['formateur'],
+                $detailsButton,
+                $actionButtons
+            );
+            
+        } // /froeach
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+    }
+
+
     public function inviteStudents($formationId,$inviteType="indiv"){
             $invited = $this->model_formation->inviteStudents($formationId,$inviteType);
             
@@ -258,6 +370,20 @@ class Formation extends CI_Controller
         }
         else{
             $this->load->view('admin/gestion_formation/update_formation',[
+                'info'=>$info
+            ]);
+        }
+
+    }
+    public function getUpdateFormationFormDept($id){
+        $info = $this->model_formation->getFormation($id);
+        if(!$info){
+            show_404();
+            return;
+
+        }
+        else{
+            $this->load->view('departement/gestion_formation/update_formation',[
                 'info'=>$info
             ]);
         }
@@ -327,6 +453,7 @@ class Formation extends CI_Controller
             }
     }
     public function fetchNotAcceptedDemandesFormation(){
+
         $moduleData = $this->model_formation->fetchNotAcceptedDemandesFormation();
         $result = array('data' => array());
         foreach ($moduleData as $key => $value) {
@@ -361,6 +488,46 @@ class Formation extends CI_Controller
         echo json_encode($result);
 
     }
+
+    public function fetchNotAcceptedDemandesFormationDept(){
+        $dept_id = $this->session->userdata()['logged']['etab_id']; // Ensure 'dept_id' is set in session
+        //echo json_encode($this->session->userdata);
+    
+        $moduleData = $this->model_formation->fetchNotAcceptedDemandesFormationDept($dept_id);
+        $result = array('data' => array());
+        foreach ($moduleData as $key => $value) {
+         
+            $actionButtons = '    
+           <div class="dashboard__button__group">
+                    <button onclick="acceptDemande('.$value['demande_id'].')"  class="dashboard__small__btn__2">
+                        <i class="icofont-check"></i>
+                        inviter
+                    </button>
+
+             </div>
+
+            ';
+            $detailsButton = '<div>
+			<a class="action-button btn btn-primary" href="'.base_url('profile_etudiant').'?etudiant_id='.$value['id'].'">
+                                                       <i class="icofont-eye-open"></i>   </a></div>	 
+                                                       ';		
+            
+            
+
+            $result['data'][$key] = array(
+                $value['nom'].' '.$value['prenom'],
+                $value['formation_name'],
+                $detailsButton,
+                $actionButtons
+            );
+            
+        } // /froeach
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+
+    }
+
     public function getDemandesForReferents(){
 
         $refrentId = $this->getIdEnseignant();
@@ -607,6 +774,12 @@ class Formation extends CI_Controller
     public function createFormationContent(){
         $info = $this->model_formation->prepareCreateFormationForm();
         $this->load->view('admin/gestion_formation/createFormation',[
+            'info'=>$info
+        ]);
+    }
+    public function createFormationContentDept(){
+        $info = $this->model_formation->prepareCreateFormationForm();
+        $this->load->view('etablissemnt/gestion_formation/createFormation',[
             'info'=>$info
         ]);
     }

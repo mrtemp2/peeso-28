@@ -13,7 +13,7 @@
         
         <hr class="mt-40"> 
         <div class="col-xl-12">
-            <form class="form-horizontal" action="<?= base_url() ?>appel_candidature/createNewAppelcandidature" enctype="multipart/form-data" method="post" id="getAttendanceForm">
+            <form class="form-horizontal" action="<?= base_url() ?>appel_candidature/createNewAppelcandidatureDept" enctype="multipart/form-data" method="post" id="getAttendanceForm">
                 <div class="row">
                     <div class="col-xl-6">
                         <div class="contact__input__wraper">
@@ -29,11 +29,11 @@
                         <div class="contact__input__wraper">
                             <label class="form-control-label" for="domaine">Domaines: </label>
                             <div>
-                                <select class="js-example-basic-multiple" name="domaine[]" id="domaine" multiple="multiple">
-                                    <?php foreach($domaine as $value){ ?>
-                                        <option value="<?= $value['id']?>"><?= $value['nom']?></option>
-                                    <? }?> 
-                                </select>
+                            <select class="js-example-basic-multiple" name="domaine[]" id="domaine" multiple="multiple">
+                                <?php foreach ($domaine as $value): ?>
+                                    <option value="<?= $value['id'] ?>"><?= $value['nom'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
                             </div>
                         </div>
                     </div>

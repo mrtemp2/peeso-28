@@ -69,3 +69,6 @@ $route['common/setEtabId'] = 'common/setEtabId';
 $route['users/fetchAdministrateurEtab'] = 'users/fetchAdministrateurEtab';
 $route['Users/update_User'] = 'Users/update_User';
 $route['Users/removeUser'] = 'Users/removeUser';
+$route['Users/add_EtabUsers'] = 'Users/add_EtabUsers';
+$route['emploiStage/fetchOffreDataDept'] = 'emploiStage/fetchOffreDataDept';
+

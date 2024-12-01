@@ -198,7 +198,7 @@ window.addEventListener('load',function() {
    
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '25%' },{ width: '25%' }, { width: '25%' },{ width: '25%' }],
-        'ajax': 'appel_candidature/getAppelcandidature',
+        'ajax': 'appel_candidature/getAppelcandidatureDept',
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bInfo":false,  
        

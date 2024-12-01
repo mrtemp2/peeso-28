@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 29, 2024 at 03:36 PM
--- Server version: 8.2.0
--- PHP Version: 8.3.0
+-- Generation Time: Dec 01, 2024 at 03:45 PM
+-- Server version: 8.3.0
+-- PHP Version: 8.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -81,20 +81,21 @@ CREATE TABLE IF NOT EXISTS `28_2024_appel_a_candidature` (
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_appel_a_candidature`
 --
 
 INSERT INTO `28_2024_appel_a_candidature` (`id`, `nom`, `sujet`, `date_debut`, `date_fin`, `domaine`, `description`, `photo`, `etab_id`) VALUES
-(1, 'Test', 'Sujett', '2024-10-02', '2024-11-21', '', 'test d\'un appel à candidature', 'https://esen-sci-compet.com/eesu/assets/assets/images/appel_a_candidature_dark7.jpg', NULL),
+(1, 'Test', 'Sujett', '2024-10-02', '2024-11-21', '', 'test d\'un appel à candidature', 'https://esen-sci-compet.com/eesu/assets/assets/images/appel_a_candidature_dark7.jpg', 8),
 (2, 'test2', 'test2', '2024-10-03', '2024-10-03', '', 'test n°2', 'https://esen-sci-compet.com/eesu/assets/assets/images/projectcycle-1024x6141.jpg', NULL),
 (3, 'appel à candidature', 'test', '2024-10-04', '2024-10-10', '', 'description test test', 'https://esen-sci-compet.com/eesu/assets/assets/images/projet1.jpg', NULL),
 (4, 'Energie renouvelable', 'Electricité', '2024-10-08', '2024-10-31', '', 'test de la photo ', 'https://esen-sci-compet.com/eesu/assets/assets/images/projet21.jpeg', NULL),
 (5, 'Intelligence artificielle', 'Application smart pour faciliter les tâches', '2024-10-14', '2024-10-21', '', 'Simplifier la tâche des étudiants entrepreneurs pour choisir un nom professionnel et adapté à leurs projets, pour corriger leurs rapports...', 'https://esen-sci-compet.com/eesu/assets/assets/images/projectcycle-1024x6143.jpg', NULL),
 (6, 'testttt', 'testtttttttt', '2024-10-28', '2024-11-10', '', 'tesstttttttttt testtttttt testttttttttttttttt', 'https://esen-sci-compet.com/eesu/assets/assets/images/projectcycle-1024x6145.jpg', NULL),
-(7, 'appel a candidature n2', 'appeeeeeel ', '2024-11-04', '2024-11-29', '', 'apeeeeeeellllllddd', 'https://esen-sci-compet.com/eesu/assets/assets/images/10d6ab35-8ccf-46c7-916c-8cc3943c143a.jpeg', NULL);
+(7, 'appel a candidature n2', 'appeeeeeel ', '2024-11-04', '2024-11-29', '', 'apeeeeeeellllllddd', 'https://esen-sci-compet.com/eesu/assets/assets/images/10d6ab35-8ccf-46c7-916c-8cc3943c143a.jpeg', NULL),
+(9, 'test dept 8 ', 'test dept 8', '2024-12-01', '2024-12-01', '', 'tes tuguy gyugyugyu', 'http://127.0.0.1/peeso-28/assets/assets/images/Capture_décran_2024-11-30_1346595.png', 8);
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_appel_domaine` (
   `id_domaine` int NOT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_appel_domaine`
@@ -124,10 +125,11 @@ INSERT INTO `28_2024_appel_domaine` (`id`, `id_appel`, `id_domaine`, `etab_id`) 
 (41, 5, 7, NULL),
 (42, 6, 3, NULL),
 (43, 6, 13, NULL),
-(44, 1, 1, NULL),
-(45, 1, 2, NULL),
 (48, 7, 2, NULL),
-(50, 8, 1, NULL);
+(50, 8, 1, NULL),
+(53, 1, 1, NULL),
+(54, 1, 2, NULL),
+(55, 9, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1077,14 +1079,15 @@ CREATE TABLE IF NOT EXISTS `28_2024_coaching` (
   `date_fin` date DEFAULT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_coaching`
 --
 
 INSERT INTO `28_2024_coaching` (`id`, `nom`, `thumbnail`, `rating`, `created_at`, `referent_id`, `publie`, `nb_seance`, `date_overture`, `date_debut`, `date_fin`, `etab_id`) VALUES
-(1, 'test coaching', NULL, 0, '2024-11-28', 1, 0, 2, NULL, '2024-11-30', '2024-12-01', NULL);
+(1, 'test coaching', NULL, 0, '2024-11-28', 1, 0, 2, NULL, '2024-11-30', '2024-12-01', 8),
+(2, 'Coaching dept', NULL, 0, '2024-12-01', 1, 0, 1, NULL, '2024-12-08', '2024-12-08', 8);
 
 -- --------------------------------------------------------
 
@@ -1132,14 +1135,15 @@ CREATE TABLE IF NOT EXISTS `28_2024_coaching_students` (
   `fiche_chaude_ready` tinyint(1) NOT NULL DEFAULT '0',
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_coaching_students`
 --
 
 INSERT INTO `28_2024_coaching_students` (`id`, `coaching_id`, `student_id`, `progression`, `fiche_chaude_ready`, `etab_id`) VALUES
-(1, 1, 8, 0, 0, NULL);
+(1, 1, 8, 0, 0, NULL),
+(2, 2, 13, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1187,15 +1191,16 @@ CREATE TABLE IF NOT EXISTS `28_2024_competition` (
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_competition`
 --
 
 INSERT INTO `28_2024_competition` (`id`, `nom`, `date_debut`, `date_fin`, `description`, `photo`, `etab_id`) VALUES
-(1, 'testtt compétition', '2024-10-29', '2024-11-10', 'testttttttttttttttt testttttttttttttttttttt', 'https://esen-sci-compet.com/eesu/assets/assets/images/competition3.jpg', NULL),
-(3, 'creation didentite visuelle', '2024-11-05', '2024-11-30', 'fjghjhgjhvjh', 'https://esen-sci-compet.com/eesu/assets/assets/images/15.png', NULL);
+(1, 'testtt compétition gg', '2024-10-29', '2024-11-10', 'testttttttttttttttt testttttttttttttttttttt', 'https://esen-sci-compet.com/eesu/assets/assets/images/competition3.jpg', 8),
+(3, 'creation didentite visuelle', '2024-11-05', '2024-11-30', 'fjghjhgjhvjh', 'https://esen-sci-compet.com/eesu/assets/assets/images/15.png', NULL),
+(4, 'test dept 8', '2024-01-01', '2024-01-01', 'jjhgjgjggjjg', '', 8);
 
 -- --------------------------------------------------------
 
@@ -1234,11 +1239,11 @@ CREATE TABLE IF NOT EXISTS `28_2024_demandes_formation` (
 --
 
 INSERT INTO `28_2024_demandes_formation` (`id`, `formation_id`, `etudiant_id`, `accepted`, `etab_id`) VALUES
-(3, 2, 16, 0, NULL),
-(4, 7, 16, 1, NULL),
-(5, 4, 16, 0, NULL),
-(6, 7, 8, 1, NULL),
-(7, 8, 8, 0, NULL);
+(3, 2, 16, 0, 0),
+(4, 7, 16, 0, 0),
+(5, 4, 16, 0, 0),
+(6, 7, 8, 1, 0),
+(7, 8, 8, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -3624,25 +3629,27 @@ CREATE TABLE IF NOT EXISTS `28_2024_formations` (
   `date_fin` date DEFAULT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_formations`
 --
 
 INSERT INTO `28_2024_formations` (`id`, `nom`, `thumbnail`, `rating`, `created_at`, `referent_id`, `publie`, `nb_seance`, `date_overture`, `date_debut`, `date_fin`, `etab_id`) VALUES
-(2, 'Making Music with Other People', 'music.jfif', 0, '2024-11-14', NULL, 0, 0, NULL, '2024-11-30', '2024-12-31', NULL),
-(3, 'Formation De Management', 'Project-Scope-Management-Cover.avif', 0, '2024-11-15', 11, 0, 0, NULL, NULL, NULL, NULL),
+(2, 'Making Music with Other People', 'music.jfif', 0, '2024-11-14', NULL, 0, 0, NULL, '2024-11-30', '2024-12-31', 8),
+(3, 'Formation De Management', 'Project-Scope-Management-Cover.avif', 0, '2024-11-15', 11, 0, 0, NULL, NULL, NULL, 8),
 (4, 'Formation DEV', NULL, 0, '2024-11-18', 11, 0, 0, NULL, NULL, NULL, NULL),
 (7, 'Formation Devops', 'devops.jfif', 0, '2024-11-18', 5, 1, 0, NULL, '2024-11-30', '2024-12-31', NULL),
-(8, '3D Painting', NULL, 0, '2024-11-25', 2, 0, 0, NULL, NULL, NULL, NULL),
+(8, '3D Painting', NULL, 0, '2024-11-25', 2, 0, 0, NULL, NULL, NULL, 8),
 (9, 'painting', NULL, 0, '2024-11-25', 1, 0, 0, NULL, '2024-11-26', '2024-12-08', NULL),
 (10, 'painting', NULL, 0, '2024-11-25', 1, 0, 3, NULL, '2024-11-29', '2024-12-07', NULL),
 (11, 'Testing', NULL, 0, '2024-11-27', 3, 0, 0, NULL, '2024-11-28', '2024-11-30', NULL),
 (12, 'Testing', NULL, 0, '2024-11-27', 3, 0, 0, NULL, '2024-11-28', '2024-11-30', NULL),
 (13, 'Testing', NULL, 0, '2024-11-27', 3, 0, 3, NULL, '2024-11-28', '2024-11-30', NULL),
 (14, 'Testing', NULL, 0, '2024-11-27', 3, 0, 2, NULL, '2024-11-28', '2024-11-29', NULL),
-(15, 'Testing', NULL, 0, '2024-11-27', 1, 0, 2, NULL, '2024-11-28', '2024-11-29', NULL);
+(15, 'Testing', NULL, 0, '2024-11-27', 1, 0, 2, NULL, '2024-11-28', '2024-11-29', NULL),
+(16, 'TestEtab 8', NULL, 0, '2024-11-30', 2, 0, 1, NULL, '2024-11-30', '2024-12-08', 8),
+(17, 'Test Etab3 8', NULL, 0, '2024-11-30', 1, 0, 1, NULL, '2024-11-30', '2024-12-01', 8);
 
 -- --------------------------------------------------------
 
@@ -3666,8 +3673,8 @@ CREATE TABLE IF NOT EXISTS `28_2024_formations_domaines` (
 INSERT INTO `28_2024_formations_domaines` (`id`, `formation_id`, `domaine_id`, `etab_id`) VALUES
 (4, 2, 3, NULL),
 (5, 3, 7, NULL),
-(6, 3, 12, NULL),
 (7, 4, 10, NULL),
+(8, 8, 12, NULL),
 (14, 7, 10, NULL);
 
 -- --------------------------------------------------------
@@ -3709,7 +3716,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_formations_students` (
   `fiche_chaude_ready` tinyint(1) NOT NULL DEFAULT '0',
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_formations_students`
@@ -3721,7 +3728,9 @@ INSERT INTO `28_2024_formations_students` (`id`, `formation_id`, `student_id`, `
 (7, 10, 8, 0, 0, NULL),
 (8, 13, 8, 0, 0, NULL),
 (9, 14, 8, 0, 0, NULL),
-(10, 15, 8, 0, 0, NULL);
+(10, 15, 8, 0, 0, NULL),
+(11, 16, 2, 0, 0, NULL),
+(12, 17, 13, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -4050,16 +4059,18 @@ CREATE TABLE IF NOT EXISTS `28_2024_news` (
   `titre-en` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_news`
 --
 
 INSERT INTO `28_2024_news` (`id`, `content`, `titre`, `image`, `added_by`, `publie`, `created_at`, `content-en`, `titre-en`, `etab_id`) VALUES
-(1, 'L’Université de Sousse a l’honneur d\'annoncer que dans le cadre de la compétition internationale START CUP COMPETITION 2024 “Entrepreneurship in the Mediterranean” organisée par UNIMED – ETF – AUF  et Lebanese University (Coordinator of UNIMED SubNetwork on Employability) le 21 et 22 Octobre 2024 en Turkie à l\'université d\'Aydin, l’équipe du projet « Smart Re-Rustica » composée de Khouloud BACCOUCHE étudiante en deuxième année mastère en protection des plantes et environnement à l’Institut Supérieur d’agronomie de Chott Meriem  et Mohamed OURAGINI étudiant en troisième année licence en Ingénierie des systèmes informatiques à l’Institut Supérieur d’informatique et des Technologies de Communication de Sousse qui ont représenté la Tunisie après avoir été finalistes ont eu le prix du « Projet le plus honorable \"devant une communauté diversifiée de toute la région méditerranéenne.', ' Félicitations et bravo aux étudiants entrepreneurs', '465273456_965522068941966_5645469509170765210_n.jpg', 0, 1, '2024-10-09', ' Félicitations Congratulations et bravo aux étudiants entrepreneurs du PEESo  Pôle Etudiant Entrepreneur Université de Sousse', ' Félicitations Congratulations et bravo aux étudiants entrepreneurs du PEESo  Pôle Etudiant Entrepreneur Université de Sousse', 1),
+(1, 'L’Université de Sousse a l’honneur d\'annoncer que dans le cadre de la compétition internationale START CUP COMPETITION 2024 “Entrepreneurship in the Mediterranean” organisée par UNIMED – ETF – AUF  et Lebanese University (Coordinator of UNIMED SubNetwork on Employability) le 21 et 22 Octobre 2024 en Turkie à l\'université d\'Aydin, l’équipe du projet « Smart Re-Rustica » composée de Khouloud BACCOUCHE étudiante en deuxième année mastère en protection des plantes et environnement à l’Institut Supérieur d’agronomie de Chott Meriem  et Mohamed OURAGINI étudiant en troisième année licence en Ingénierie des systèmes informatiques à l’Institut Supérieur d’informatique et des Technologies de Communication de Sousse qui ont représenté la Tunisie après avoir été finalistes ont eu le prix du « Projet le plus honorable \"devant une communauté diversifiée de toute la région méditerranéenne.', ' Félicitations et bravo aux étudiants entrepreneurs', '465273456_965522068941966_5645469509170765210_n.jpg', 0, 1, '2024-10-09', ' Félicitations Congratulations et bravo aux étudiants entrepreneurs du PEESo  Pôle Etudiant Entrepreneur Université de Sousse', ' Félicitations Congratulations et bravo aux étudiants entrepreneurs du PEESo  Pôle Etudiant Entrepreneur Université de Sousse', 8),
 (5, '<p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Participation de </span><a href=\"https://www.facebook.com/universityofsousse?__cft__[0]=AZXmEwfN8wTw7Z6aNQfyLlro61JdvgOBkMm0-2Mk2RarHAbrg3kkPX0sFow1qwSql9qtmhm3z5F0rBDZn4FU9rUrZGF4asFGDpjXA0lkUAMxZlPWWLlARe-F_CaMvHu9DbG5_acFV-PuQl_wA9pqmrPE42I4f7LCr4MqU1YKIbVM-_QjxXlEV38_6uSyRuqOy-4&amp;__tn__=-]K-R\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: transparent; color: var(--blue-link);\">Université de Sousse</a><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\"> au Salon des Universités et de la formation organisé par la Foire de Sousse du 24 au 26 Mai 2024 avec la réservation d\'un espace au profit de quelques porteurs de projets de l\'Institut Supérieur d\'agronomie de Chott Meriem et de l\'Institut Supérieur des Beaux-arts de Sousse</span></p>', 'Participation au Salon des Universités', '445372715_468098882408826_4093442829963163760_n.jpg', 0, 1, '2024-11-07', '<p>Participation of the University of Sousse in the University and Training Fair organized by the Sousse Fair from May 24 to 26, 2024 with the reservation of a space for the benefit of some project leaders from the Higher Institute of Agronomy of Chott Meriem and the Higher Institute of Fine Arts of Sousse</p>', 'Participation in the University Fair', NULL),
-(6, '<p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Comité de sélection des étudiants entrepreneurs de l\'ISSAT de Sousse, l\'ISET de Sousse, l\'ISTLS de de Sousse candidats à la troisième cohorte du Statut National de l\'Etudiant Entrepreneur au siège du PEESo.</span></p><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Remerciement à tous les référents : M. Mounir FRIJA, Mme. Hanene Memmi , M. Mourad HADHRI, M. Ahmed Youssef El FEKIH, M. Hichem HASSINE Mme. Maissa CHAIBI et à Mme Feten Ayari présidente de l\'espace entreprendre de Sousse</span></p><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Bonne chance à tous les candidats</span></p><p><br></p>', 'Comité de sélection des étudiants entrepreneurs ', '433426891_424779836740731_2165581947807999109_n.jpg', 0, 1, '2024-11-07', '<p>Selection committee of student entrepreneurs of ISSAT of Sousse, ISET of Sousse, ISTLS of Sousse candidates for the third cohort of the National Status of Student Entrepreneur at the headquarters of PEESo.</p><p>Thanks to all the referents: Mr. Mounir FRIJA, Mrs. Hanene Memmi, Mr. Mourad HADHRI, Mr. Ahmed Youssef El FEKIH, Mr. Hichem HASSINE Mrs. Maissa CHAIBI and Mrs. Feten Ayari president of the Sousse entrepreneurship space</p><p>Good luck to all the candidates</p>', 'Selection committee of student entrepreneurs', NULL);
+(6, '<p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Comité de sélection des étudiants entrepreneurs de l\'ISSAT de Sousse, l\'ISET de Sousse, l\'ISTLS de de Sousse candidats à la troisième cohorte du Statut National de l\'Etudiant Entrepreneur au siège du PEESo.</span></p><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Remerciement à tous les référents : M. Mounir FRIJA, Mme. Hanene Memmi , M. Mourad HADHRI, M. Ahmed Youssef El FEKIH, M. Hichem HASSINE Mme. Maissa CHAIBI et à Mme Feten Ayari présidente de l\'espace entreprendre de Sousse</span></p><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(8, 8, 9);\">Bonne chance à tous les candidats</span></p><p><br></p>', 'Comité de sélection des étudiants entrepreneurs ', '433426891_424779836740731_2165581947807999109_n.jpg', 0, 1, '2024-11-07', '<p>Selection committee of student entrepreneurs of ISSAT of Sousse, ISET of Sousse, ISTLS of Sousse candidates for the third cohort of the National Status of Student Entrepreneur at the headquarters of PEESo.</p><p>Thanks to all the referents: Mr. Mounir FRIJA, Mrs. Hanene Memmi, Mr. Mourad HADHRI, Mr. Ahmed Youssef El FEKIH, Mr. Hichem HASSINE Mrs. Maissa CHAIBI and Mrs. Feten Ayari president of the Sousse entrepreneurship space</p><p>Good luck to all the candidates</p>', 'Selection committee of student entrepreneurs', NULL),
+(7, 'kkjjhjkkh', 'abc', '62d63eff2f7b1de52eb9baaebd3c2d8f.png', 0, 1, '2024-12-01', '', '', 8),
+(8, 'adadzadazd', 'abcd', '65c701cacd3ee13f9b1a1a0e53b0f697.png', 0, 1, '2024-12-01', '', '', 8);
 
 -- --------------------------------------------------------
 
@@ -4655,7 +4666,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_seances` (
   `coaching_id` int NOT NULL,
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_seances`
@@ -4684,7 +4695,10 @@ INSERT INTO `28_2024_seances` (`id`, `formation_id`, `nom`, `ordre`, `date_debut
 (27, 15, 'séance1', 1, '2024-11-28 10:00:00', '2024-11-28 12:00:00', 0, 0, NULL),
 (28, 15, 'séance2', 2, '2024-11-29 10:00:00', '2024-11-29 12:00:00', 0, 0, NULL),
 (29, 0, 'séance1', 1, '2024-11-30 12:00:00', '2024-11-30 14:00:00', 0, 1, NULL),
-(30, 0, 'séance2', 2, '2024-12-01 12:00:00', '2024-12-01 14:00:00', 0, 1, NULL);
+(30, 0, 'séance2', 2, '2024-12-01 12:00:00', '2024-12-01 14:00:00', 0, 1, NULL),
+(31, 16, 'Test1', 1, '2024-11-30 22:52:00', '2024-11-30 02:52:00', 0, 0, NULL),
+(32, 17, '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, NULL),
+(33, 0, '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -5298,7 +5312,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_stage_emploi` (
 INSERT INTO `28_2024_stage_emploi` (`id`, `entreprise`, `titre`, `adresse`, `date_publication`, `description`, `type`, `etab_id`) VALUES
 (1, 'Test Entreprise', 'Test Stage', 'test adresse 123', '2024-11-27', 'Offre de stage ', 'stage', NULL),
 (2, 'emploi entreprise', 'test emploi', 'adresse 123', '2024-11-27', 'c\'est une offre d\'emploi ', 'emploi', NULL),
-(3, 'pfe entreprise', 'test pfe', 'adresse 456', '2024-11-27', 'c\'est une offre de pfe test description', 'PFE', NULL);
+(3, 'pfe entreprise', 'test pfe test etab', 'adresse 456', '2024-11-30', 'c\'est une offre de pfe test description', 'PFE', 8);
 
 -- --------------------------------------------------------
 
@@ -5486,7 +5500,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_users` (
   `compte_incube` tinyint(1) NOT NULL DEFAULT '0',
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_users`
@@ -5509,8 +5523,8 @@ INSERT INTO `28_2024_users` (`id`, `username`, `password`, `type`, `etudiant_id`
 (16, '75109136', '52938434', 'Etudiant', 11, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
 (17, '11955470', 'Azerty123@@', 'Etudiant', 12, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
 (18, '11955480', 'Azerty123@@', 'Etudiant', 13, NULL, NULL, 0, NULL, 9, '', 1, NULL),
-(19, '93744825', '19260871', 'Administrateur_etab', 14, NULL, NULL, 0, NULL, NULL, '', 1, NULL),
-(20, 'Balkis', 'Balkis55722**', 'Etudiant', 15, NULL, NULL, 0, '151.png', NULL, '', 0, NULL);
+(20, 'Balkis', 'Balkis55722**', 'Etudiant', 15, NULL, NULL, 0, '151.png', NULL, '', 0, NULL),
+(23, 'admin', '123456789', 'Administrateur_etab', NULL, NULL, NULL, 0, NULL, NULL, '', 0, 8);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

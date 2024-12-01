@@ -9,6 +9,8 @@ class EmploiStage extends CI_Controller
         $this->load->model('model_emploi_stage');
         $this->load->database();
         $this->load->library('session');
+        $this->load->model('model_admin');
+
 
     }
 
@@ -58,6 +60,41 @@ class EmploiStage extends CI_Controller
     
     
         $moduleData = $this->model_emploi_stage->fetchOffreData($offer_type);
+        $result = array('data' => array());
+    
+        foreach ($moduleData as $key => $value) {
+            $button = '
+                <div class="actions d-flex align-items-center">
+                    <button type="button" class="btn btn-sm btn-primary action-button m-1" data-target="#ViewSubjectModal" onclick="ViewSubject(' . $value['id'] . ')" data-toggle="modal">
+                        <i class="icofont-eye"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-warning action-button m-1" data-toggle="modal" data-target="#updateSubjectModal" onclick="updateSubject(' . $value['id'] . ')">
+                        <i class="icofont-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger action-button m-1" data-toggle="modal" data-target="#removeSubjectModal" onclick="removeSubject(' . $value['id'] . ')">
+                        <i class="icofont-trash"></i>
+                    </button>
+                </div>
+            ';
+    
+            $result['data'][$key] = array(
+                $value['titre'],
+                $value['entreprise'],
+                $value['adresse'],
+                $value['date_publication'],
+                $button
+            );
+        }
+    
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+    }
+    public function fetchOffreDataDept() {
+        $offer_type = $this->input->get('offre_type'); // Correct parameter key
+        $dept_id = $this->session->userdata()['logged']['etab_id']; // Ensure 'dept_id' is set in session
+        //echo json_encode($this->session->userdata);
+    
+        $moduleData = $this->model_emploi_stage->fetchOffreDataDept($offer_type, $dept_id);
         $result = array('data' => array());
     
         foreach ($moduleData as $key => $value) {

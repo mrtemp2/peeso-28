@@ -22,7 +22,7 @@ class Pages extends CI_Controller
                 'commite_selection','liste_rendez_vous_comite','randez-vous','echanges_history','project_non_affecte_initiateur','project_non_affecte_innovateur','project_non_affecte_promoteur',
                 'project_affecte_initiateur','project_affecte_innovateur','project_affecte_promoteur','mise_a_jour_profile_admin','profile_referent','demande_formation_en_cours','all_formations',
                 'list_structure_appui','detail_formation','update_formation','profile_etudiant','details_randez_vous','gestion_stage_emploi','demande_coaching_en_cours','all_coaching',
-                'detail_coaching','list_comp_etab'
+                'detail_coaching','list_comp_etab','ajout_AdminEtab'
             ),
             'pagelocations'=>[
                 'dashboard'=>'admin/dashboard',
@@ -78,7 +78,8 @@ class Pages extends CI_Controller
                 'demande_coaching_en_cours'=>'admin/demande_coaching_en_cours',
                 'all_coaching'=>'admin/all_coaching',
                 'detail_coaching'=>'admin/detail_coaching',
-                'list_comp_etab'=>'admin/list_comp_etab'
+                'list_comp_etab'=>'admin/list_comp_etab',
+                'ajout_AdminEtab'=>'admin/ajout_AdminEtab'
             ]
         ],
         'Etudiant'=>[
@@ -215,72 +216,69 @@ class Pages extends CI_Controller
             ],
         ],
         'Administrateur_etab'=>[
-            'header'=>'admin/header_admin',
-            'footer'=>'admin/footer_admin',
+            'header'=>'etablissement/header_admin',
+            'footer'=>'etablissement/footer_admin',
             'routes'=>array(
-                'dashboard','appel_a_candidature','liste_appel_candidature','list_referents','gestion_etablissement','misejour_compte_admin','liste_capsules_videos',
+                'dashboard','appel_a_candidature','liste_appel_candidature','misejour_compte_admin','liste_capsules_videos',
                 'demandes_creation_projets','details_projects_etudiant','list_actualite','ajout_actualite','liste_newsletters','ajout_newsletter','liste_subscribers',
                 'liste_projets_acceptes','liste_projets_en_cours_d_etudes','ajout_evenement','liste_evenements','ajout_competition','liste_competitions','liste_inscrits_accepte_refuse','rendez_vous_calendar',
-                'liste_projets_1er_validation','liste_projets_initiateurs','liste_projets_innovateurs','liste_projets_promoteurs','liste_projets_refuses','liste_etudiant',
+                'liste_projets_1er_validation','liste_projets_initiateurs','liste_projets_innovateurs','liste_projets_promoteurs','liste_projets_refuses',
                 'commite_selection','liste_rendez_vous_comite','randez-vous','echanges_history','project_non_affecte_initiateur','project_non_affecte_innovateur','project_non_affecte_promoteur',
                 'project_affecte_initiateur','project_affecte_innovateur','project_affecte_promoteur','mise_a_jour_profile_admin','profile_referent','demande_formation_en_cours','all_formations',
-                'list_structure_appui','detail_formation','update_formation','profile_etudiant','details_randez_vous','gestion_stage_emploi','demande_coaching_en_cours','all_coaching',
+                'detail_formation','update_formation_etab','profile_etudiant','details_randez_vous','gestion_stage_emploi','demande_coaching_en_cours','all_coaching',
                 'detail_coaching'
             ),
             'pagelocations'=>[
-                'dashboard'=>'admin/dashboard',
-                'appel_a_candidature'=>'admin/appel_a_candidature',
-                'liste_appel_candidature'=>'admin/liste_appel_candidature',
-                'list_referents'=>'admin/list_referents',
-                'gestion_etablissement'=>'admin/gestion_etablissement',
-                'misejour_compte_admin'=>'admin/misejour_compte_admin',
-                'liste_capsules_videos'=>'admin/liste_capsules_videos',
-                'demandes_creation_projets'=>'admin/demandes_creation_projets',
-                'details_projects_etudiant'=>'admin/details_projects_etudiant',
-                'list_actualite'=>'admin/list_actualite',
-                'ajout_actualite'=>'admin/ajout_actualite',
-                'liste_newsletters'=>'admin/liste_newsletters',
-                'ajout_newsletter'=>'admin/ajout_newsletter',
-                'liste_subscribers'=>'admin/liste_subscribers',
-                'liste_projets_acceptes'=>'admin/liste_projets_acceptes',
-                'liste_projets_en_cours_d_etudes'=>'admin/liste_projets_en_cours_d_etudes',
-                'ajout_evenement'=>'admin/ajout_evenement',
-                'liste_evenements'=>'admin/liste_evenements',
-                'ajout_competition'=>'admin/ajout_competition',
-                'liste_competitions' => 'admin/liste_competitions',
-                'liste_inscrits_accepte_refuse'=>'admin/liste_inscrits_accepte_refuse',
-                'rendez_vous_calendar'=>'admin/rendez_vous_calendar',
-                'liste_projets_1er_validation'=>'admin/liste_projets_1er_validation',
-                'liste_projets_initiateurs'=>'admin/liste_projets_initiateurs',
-                'liste_projets_innovateurs'=>'admin/liste_projets_innovateurs',
-                'liste_projets_promoteurs'=>'admin/liste_projets_promoteurs',
-                'liste_projets_refuses'=>'admin/liste_projets_refuses',
-                'liste_etudiant'=>'admin/liste_etudiant',
-                'commite_selection'=>'admin/commite_selection',
-                'liste_rendez_vous_comite'=>'admin/liste_rendez_vous_comite',
-                'randez-vous'=>'admin/randez-vous',
-                'echanges_history'=>'admin/echanges_history',
-                'project_non_affecte_initiateur'=>'admin/project_non_affecte_initiateur',
-                'project_non_affecte_innovateur'=>'admin/project_non_affecte_innovateur',
-                'project_non_affecte_promoteur'=>'admin/project_non_affecte_promoteur',
-                'project_affecte_initiateur'=>'admin/project_affecte_initiateur',
-                'project_affecte_innovateur'=>'admin/project_affecte_innovateur',
-                'project_affecte_promoteur'=>'admin/project_affecte_promoteur',
-                'mise_a_jour_profile_admin'=>'admin/mise_a_jour_profile_admin',
-                'profile_referent'=>'admin/profile_referent',
-                'demande_formation_en_cours'=>'admin/demande_formation_en_cours',
-                'all_formations'=> 'admin/all_formations',
-                'list_structure_appui'=>'admin/list_structure_appui',
-                'detail_formation'=>'admin/detail_formation',
-                'update_formation'=>'admin/gestion_formation/update_formation',
-                'profile_etudiant'=>'admin/profile_etudiant',
+                'dashboard'=>'etablissement/dashboard',
+                'appel_a_candidature'=>'etablissement/appel_a_candidature',
+                'liste_appel_candidature'=>'etablissement/liste_appel_candidature',
+                'misejour_compte_admin'=>'etablissement/misejour_compte_admin',
+                'liste_capsules_videos'=>'etablissement/liste_capsules_videos',
+                'demandes_creation_projets'=>'etablissement/demandes_creation_projets',
+                'details_projects_etudiant'=>'etablissement/details_projects_etudiant',
+                'list_actualite'=>'etablissement/list_actualite',
+                'ajout_actualite'=>'etablissement/ajout_actualite',
+                'liste_newsletters'=>'etablissement/liste_newsletters',
+                'ajout_newsletter'=>'etablissement/ajout_newsletter',
+                'liste_subscribers'=>'etablissement/liste_subscribers',
+                'liste_projets_acceptes'=>'etablissement/liste_projets_acceptes',
+                'liste_projets_en_cours_d_etudes'=>'etablissement/liste_projets_en_cours_d_etudes',
+                'ajout_evenement'=>'etablissement/ajout_evenement',
+                'liste_evenements'=>'etablissement/liste_evenements',
+                'ajout_competition'=>'etablissement/ajout_competition',
+                'liste_competitions' => 'etablissement/liste_competitions',
+                'liste_inscrits_accepte_refuse'=>'etablissement/liste_inscrits_accepte_refuse',
+                'rendez_vous_calendar'=>'etablissement/rendez_vous_calendar',
+                'liste_projets_1er_validation'=>'etablissement/liste_projets_1er_validation',
+                'liste_projets_initiateurs'=>'etablissement/liste_projets_initiateurs',
+                'liste_projets_innovateurs'=>'etablissement/liste_projets_innovateurs',
+                'liste_projets_promoteurs'=>'etablissement/liste_projets_promoteurs',
+                'liste_projets_refuses'=>'etablissement/liste_projets_refuses',
+                'commite_selection'=>'etablissement/commite_selection',
+                'liste_rendez_vous_comite'=>'etablissement/liste_rendez_vous_comite',
+                'randez-vous'=>'etablissement/randez-vous',
+                'echanges_history'=>'etablissement/echanges_history',
+                'project_non_affecte_initiateur'=>'etablissement/project_non_affecte_initiateur',
+                'project_non_affecte_innovateur'=>'etablissement/project_non_affecte_innovateur',
+                'project_non_affecte_promoteur'=>'etablissement/project_non_affecte_promoteur',
+                'project_affecte_initiateur'=>'etablissement/project_affecte_initiateur',
+                'project_affecte_innovateur'=>'etablissement/project_affecte_innovateur',
+                'project_affecte_promoteur'=>'etablissement/project_affecte_promoteur',
+                'mise_a_jour_profile_admin'=>'etablissement/mise_a_jour_profile_admin',
+                'profile_referent'=>'etablissement/profile_referent',
+                'demande_formation_en_cours'=>'etablissement/demande_formation_en_cours',
+                'all_formations'=> 'etablissement/all_formations',
+                
+                'detail_formation'=>'etablissement/detail_formation',
+                'update_formation_etab'=>'etablissement/gestion_formation/update_formation',
+                'profile_etudiant'=>'etablissement/profile_etudiant',
                 'group_progress'=>'enseignant/group_progress',
                 'group_parcours'=>'enseignant/group_parcours',
                 'details_randez_vous'=>'utils/details_randez_vous',
-                'gestion_stage_emploi'=>'admin/gestion_stage_emploi',
-                'demande_coaching_en_cours'=>'admin/demande_coaching_en_cours',
-                'all_coaching'=>'admin/all_coaching',
-                'detail_coaching'=>'admin/detail_coaching'
+                'gestion_stage_emploi'=>'etablissement/gestion_stage_emploi',
+                'demande_coaching_en_cours'=>'etablissement/demande_coaching_en_cours',
+                'all_coaching'=>'etablissement/all_coaching',
+                'detail_coaching'=>'etablissement/detail_coaching'
                 
             ]
         ],
@@ -306,6 +304,7 @@ class Pages extends CI_Controller
        $this->load->model('model_admin');
        $this->load->model('model_emploi_stage');
        $this->load->model('model_user');
+       $this->load->model('model_domaine');
        $this->load->database();
     }
     public function view($page='acceuil'){
@@ -332,7 +331,7 @@ class Pages extends CI_Controller
                 $userType = 'guest';
             }
 
-            if($userType=='Administrateur' || $userType=='Etudiant' || $userType=='Enseignant' || $userType=='Enseignant_Professionnel'){
+            if($userType=='Administrateur' || $userType=='Etudiant' || $userType=='Enseignant' || $userType=='Enseignant_Professionnel'|| $userType=='Administrateur_etab'){
                 if($page == 'acceuil' || $page == 'capsules_videos' || $page == 'appel_a_candidature_active'|| $page =='actualite' || $page == 'contactez_nous' || $page == 'evenement'
                    || $page == 'sinscrire_evenement' || $page == 'competition'|| $page == 'sinscrire_competition'|| $page =='nos_objectifs' || $page == 'qui_sommes_nous'||$page =='reseau_4c'
                    || $page == 'stage_emploi'
@@ -588,6 +587,14 @@ class Pages extends CI_Controller
                         }
                         $this->data['info']=$info;
                     }
+                    if($page=='update_formation_etab'){
+                        $info=$this->prepareUpdateFormationPageEtab();
+                        if(!$info){
+                            show_404();
+                            return;
+                        }
+                        $this->data['info']=$info;
+                    }
                     if(in_array($page,$user_routes)){
                         
                         $this->load->view($header, $this->data);
@@ -772,6 +779,16 @@ class Pages extends CI_Controller
         }
     }
     public function prepareUpdateFormationPage(){
+        if(isset($_GET['formation_id'])){
+            $formationId=intval($_GET['formation_id']);
+           return $this->model_formation->prepareUpdateFormationPage($formationId);
+        }
+        else{
+            return null;
+        }
+
+    }
+    public function prepareUpdateFormationPageEtab(){
         if(isset($_GET['formation_id'])){
             $formationId=intval($_GET['formation_id']);
            return $this->model_formation->prepareUpdateFormationPage($formationId);

@@ -74,6 +74,15 @@ class Model_coaching extends CI_Model
                   ->result_array()  
                     ;       
     }
+    public function fetchCoachingDataDept($dept_id){
+        return  $this->db->select('c.*,concat(e.nom,e.prenom) as coach')
+                  ->from('coaching c')
+                  ->join('enseignant e','c.referent_id=e.id')
+                  ->where('c.etab_id',$dept_id)
+                  ->get()
+                  ->result_array()  
+                    ;       
+    }
     
     public function updateFormation($id,$formation){
         $updated = $this->db->where('id',$id)->update('formations',$formation);
@@ -322,6 +331,20 @@ class Model_coaching extends CI_Model
 
 
     }
+
+    public function fetchNotAcceptedDemandesCoachingDept($dept_id){
+        return $this->db->select('dc.id as demande_id,e.*,c.nom as coaching_name')
+                        ->from('demandes_coaching dc')
+                        ->join('etudiants e','dc.etudiant_id=e.id')
+                        ->join('coaching c','dc.coaching_id=c.id')
+                        ->where('dc.accepted',false)
+                        ->where('dc.etab_id', $dept_id)
+                        ->get()
+                        ->result_array();
+
+
+    }
+
     public function getAcceptedDemandesFormation(){
         return $this->db->select('df.id as demande_id,e.*,f.nom as formation_name')
         ->from('demandes_formation df')

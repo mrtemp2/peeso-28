@@ -173,7 +173,7 @@ window.addEventListener('load',function() {
    
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '10%' },{ width: '70%' },{ width: '20%' }],
-        'ajax': 'news/fetchDataNews',
+        'ajax': 'news/fetchDataNewsDept',
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bInfo":false,  
        

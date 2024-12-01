@@ -319,7 +319,7 @@ window.addEventListener('load',function() {
    
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '10%' },{ width: '50%' }, { width: '20%' },{ width: '20%' }],
-        'ajax': 'news/fetchDataCompetitons',
+        'ajax': 'news/fetchDataCompetitonsDept',
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bInfo":false,  
        
@@ -646,7 +646,7 @@ function ViewSubject(module_id = null) {
         .catch(error => console.error('Error loading event data:', error));
 
         // Handle form submission using fetch
-        $("#createStudentForm").unbind('submit').bind('submit', function(event) {
+        $("#updateAppelForm").unbind('submit').bind('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
             // Create FormData from the form
@@ -683,13 +683,7 @@ function ViewSubject(module_id = null) {
                             .removeClass('has-success')
                             .addClass(value.length > 0 ? 'has-error' : 'has-success')
                             .find('.text-danger').remove();
-                        key.after(value);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error updating event:', error);
-                $("#add-module-messages_update").html(`
+                            $("#add-module-messages_update").html(`
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -697,7 +691,10 @@ function ViewSubject(module_id = null) {
                         An error occurred during the update.
                     </div>
                 `);
-            });
+                        key.after(value);
+                    });
+                }
+            })
         });
     }
 

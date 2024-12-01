@@ -98,6 +98,75 @@ class Coaching extends CI_Controller
 
 
     }
+    public function createCoachingDept(){
+      
+        $validator = array('success' => false, 'messages' => array());
+        $validate_data = array(
+            array(
+                'field' => 'nom',
+                'label' => 'Nom',
+                'rules' => 'required',
+            ),
+            array(
+                'field' => 'date_debut',
+                'label' => 'Date Début',
+                'rules' => 'required',
+            ),
+            array(
+                'field' => 'date_fin',
+                'label' => 'Date Fin',
+                'rules' => 'required',
+            ),
+           
+            array(
+                'field' => 'referent_id',
+                'label' => 'Référent',
+                'rules' => 'required',
+            ),
+         );
+        $this->form_validation->set_rules($validate_data);
+        $this->form_validation->set_error_delimiters('<p>', '</p>');
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+         $inserted_data = [
+            'nom'=>$this->input->post('nom'),
+            'date_debut'=>$this->input->post('date_debut'),
+            'date_fin'=>$this->input->post('date_fin'),
+            'referent_id'=>$this->input->post('referent_id'),
+            'etab_id' =>$dept_id,
+         ];
+        if ($this->form_validation->run() === true) {
+            $thumbnailfile = $_FILES['thumbnail'];
+            if($thumbnailfile && isset($_FILES['thumbnail']['name']) && $_FILES['thumbnail']['name']){
+                $path = './assets/assets/images/'.$_FILES['thumbnail']['name'];
+                move_uploaded_file($_FILES['thumbnail']['tmp_name'], $path);
+                $inserted_data['thumbnail']= $_FILES['thumbnail']['name'];
+            }
+            $inserted_data['created_at'] = date('Y-m-d');
+            $created = $this->model_coaching->createCoaching($inserted_data);
+            if($created){
+                echo json_encode([
+                    'success'=>true,
+                    'message'=>'La Session De Coaching Est Crée avec succes'
+                ]);
+            }
+            else{
+                echo json_encode([
+                    'success'=>false,
+                    'message'=>'Echec De l\'insertion veuillez Réessayer'
+                ]);
+            }
+        
+        } else {
+                    $validator['success'] = false;
+                    foreach ($_POST as $key => $value) {
+                        $validator['message'] = form_error($key);
+                    }
+                }
+
+       
+
+
+}
 
     public function updateFormation($id){
       
@@ -159,9 +228,11 @@ class Coaching extends CI_Controller
    
 
     }
-    public function fetchCoachingData()
+    public function fetchCoachingDataDept()
     {
-        $moduleData = $this->model_coaching->fetchCoachingData();
+        $dept_id = $this->session->userdata()['logged']['etab_id']; // Ensure 'dept_id' is set in session
+
+        $moduleData = $this->model_coaching->fetchCoachingDataDept($dept_id);
         $result = array('data' => array());
         foreach ($moduleData as $key => $value) {
          
@@ -198,6 +269,7 @@ class Coaching extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
+
     public function inviteStudents($formationId,$inviteType="indiv"){
             $invited = $this->model_coaching->inviteStudents($formationId,$inviteType);
             
@@ -361,6 +433,44 @@ class Coaching extends CI_Controller
         echo json_encode($result);
 
     }
+
+    public function fetchNotAcceptedDemandesCoachingDept(){
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+        $moduleData = $this->model_coaching->fetchNotAcceptedDemandesCoachingDept($dept_id);
+        $result = array('data' => array());
+        foreach ($moduleData as $key => $value) {
+         
+            $actionButtons = '    
+           <div class="dashboard__button__group">
+                    <button onclick="acceptDemande('.$value['demande_id'].')"  class="dashboard__small__btn__2">
+                        <i class="icofont-check"></i>
+                        inviter
+                    </button>
+
+             </div>
+
+            ';
+            $detailsButton = '<div>
+			<a class="action-button btn btn-primary" href="'.base_url('profile_etudiant').'?etudiant_id='.$value['id'].'">
+                                                       <i class="icofont-eye-open"></i>   </a></div>	 
+                                                       ';		
+            
+            
+
+            $result['data'][$key] = array(
+                $value['nom'].' '.$value['prenom'],
+                $value['coaching_name'],
+                $detailsButton,
+                $actionButtons
+            );
+            
+        } // /froeach
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+
+    }
+
     public function getDemandesForReferents(){
 
         $refrentId = $this->getIdEnseignant();
@@ -607,6 +717,12 @@ class Coaching extends CI_Controller
     public function createCoachingContent(){
         $info = $this->model_coaching->prepareCreateCoachingForm();
         $this->load->view('admin/gestion_coaching/createCoaching',[
+            'info'=>$info
+        ]);
+    }
+    public function createCoachingContentDept(){
+        $info = $this->model_coaching->prepareCreateCoachingForm();
+        $this->load->view('etablissement/gestion_coaching/createCoaching',[
             'info'=>$info
         ]);
     }

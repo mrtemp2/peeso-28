@@ -38,6 +38,25 @@ class Model_emploi_stage extends CI_Model
     
         return $query->result_array();
     }
+    public function fetchOffreDataDept($offer_type, $dept_id) {
+        // Select all columns from the 'stage_emploi' table
+        $this->db->select('*')->from('stage_emploi');
+    
+        // Add a condition for the 'dept_id' field (mandatory filter)
+        $this->db->where('etab_id', $dept_id);
+        
+        // Add a condition for the 'type' field if $offer_type is provided
+        if (!empty($offer_type)) {
+            $this->db->where('type', $offer_type);
+        }
+    
+        // Execute the query
+        $query = $this->db->get();
+    
+        // Return the result as an array
+        return $query->result_array();
+    }
+    
 
     public function getAllOffres() {
         $this->db->select('*')->from('stage_emploi');

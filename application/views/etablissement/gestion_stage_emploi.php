@@ -223,7 +223,7 @@ window.addEventListener('load',function() {
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '20%' },{ width: '20%' },{ width: '20%' },{ width: '20%' },{ width: '20%' }],
         'ajax': {
-            'url':'emploiStage/fetchOffreData',
+            'url':'emploiStage/fetchOffreDataDept',
             'data':function(d){
                 d.offre_type = $('#offerTypeFilter').val();
             }

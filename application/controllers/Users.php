@@ -90,4 +90,50 @@ class Users extends CI_Controller {
         }
 
     }
+    public function add_EtabUsers()
+    {
+        $this->form_validation->set_rules('ajout_nom_fr', 'Nom', 'required|alpha');
+        $this->form_validation->set_rules('ajout_pwd_fr', 'Mot de passe', 'required|min_length[6]');
+        $this->form_validation->set_rules('etab_id', 'Établissement', 'required|numeric');
+        if ($this->form_validation->run() === true) {
+            $insert_data = array(
+                'username' => $this->input->post('ajout_nom_fr'),
+                'password' => $this->input->post('ajout_pwd_fr'),
+                'type' => 'Administrateur_etab',
+                'etab_id' => $this->input->post('etab_id'),
+            );
+    
+            // Call the model to save the data in the database
+            $success = $this->Model_user->insertUser($insert_data);
+    
+            if ($success) {
+                $validator = array(
+                    'success' => true,
+                    'message' => 'Ajouté avec succès',
+                );
+            } else {
+                $validator = array('success' => false, 'message' => 'Échec de l\'ajout');
+            }
+        } else {
+            // Capture validation errors
+            $error_message = validation_errors();
+    
+            // Log the error to a custom file
+            $log_file = '/validation_errors.log'; // Define your log file path
+            $log_message = "[" . date('Y-m-d H:i:s') . "] Validation Error: " . $error_message . PHP_EOL;
+    
+            // Append the error message to the log file
+            file_put_contents($log_file, $log_message, FILE_APPEND);
+    
+            // Optionally, log using CodeIgniter's logging system
+            log_message('error', 'Validation Error: ' . $error_message);
+    
+            $validator = array('success' => false, 'message' => $error_message);
+        }
+    
+        // Encode the response as JSON
+        header('Content-Type: application/json');
+        echo json_encode($validator);
+    }
+    
 }

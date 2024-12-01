@@ -26,7 +26,7 @@
                             <div class="dashboard__content__wraper">
                                 <div class="dashboard__section__title" style="display: flex;align-items:center;justify-content:space-between;">
                                     <h4>Liste Des Formation</h4>
-                                    <button class="default__button" onclick="ajouterFormation()" href="#">Ajouter Formation</button>
+                                    <button class="default__button" onclick="ajouterFormation()" href="#">Ajouter Formation Departement</button>
                                 </div>
 
                                 
@@ -82,7 +82,7 @@ window.addEventListener('load',function() {
     
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '17%' },{ width: '18%' },{ width: '20%' }, { width: '20%' },{ width: '25%' }],
-        'ajax': 'formation/fetchFormationData',
+        'ajax': 'formation/fetchFormationDataDept',
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bInfo":false,  
        
@@ -123,7 +123,7 @@ window.addEventListener('load',function() {
 function ajouterFormation(){
     let updateReferentForm
     overlayOn()
-    $('#createFormationContent').load('<?=base_url()?>formation/createFormationContent',(complete)=>{
+    $('#createFormationContent').load('<?=base_url()?>formation/createFormationContentDept',(complete)=>{
         
         setTimeout(()=>{
             
@@ -198,7 +198,7 @@ function ajouterFormation(){
 function updateFormation(id){
     let updateReferentForm
     overlayOn()
-    $('#updateModalContent').load('<?=base_url()?>formation/getUpdateFormationForm/'+id,(complete)=>{
+    $('#updateModalContent').load('<?=base_url()?>formation/getUpdateFormationFormDept/'+id,(complete)=>{
        
         setTimeout(()=>{
             $('.js-example-domaine-multiple').select2({

@@ -75,6 +75,155 @@ class News extends CI_Controller
 
 
     }
+    public function add_newsDept()
+    {
+        // Existing validation and file upload checks
+        $adder_id = $this->session->userdata['logged']['id'];
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+    
+        // Validation rules
+        $this->form_validation->set_rules('titre-fr', 'Titre En Français', 'trim|required|max_length[255]');
+        $this->form_validation->set_rules('content-fr', 'Contenu En Français', 'trim|required');
+    
+        $response = ['success' => false, 'message' => ''];
+    
+        if ($this->form_validation->run() === true) {
+            // Check file upload
+            $soumissionFile = $_FILES['image'];
+            if (empty($soumissionFile['name'])) {
+                $response = [
+                    'success' => false, 
+                    'message' => 'Vous n\'avez pas sélectionné de fichier à télécharger.'
+                ];
+                $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($response));
+                return;
+            }
+    
+            // File upload configuration
+            $config = [
+                'upload_path' => './assets/assets/images',
+                'allowed_types' => 'png|jpg|jpeg',
+                'max_size' => 240000,
+                'encrypt_name' => true // Generates a random encrypted filename
+            ];
+            $this->load->library('upload', $config);
+    
+            // Prepare insert data
+            $insert_data = [
+                'content' => $this->input->post('content-fr'),
+                'titre' => $this->input->post('titre-fr'),
+                'publie' => true,
+                'created_at' => date("Y-m-d"),
+                'etab_id' => $dept_id
+            ];
+    
+            // Upload file
+            if ($this->upload->do_upload('image')) {
+                $upload_data = $this->upload->data();
+                $insert_data['image'] = $upload_data['file_name'];
+    
+                // Save to database
+                $success = $this->model_news->add_newsDept($insert_data);
+    
+                if ($success) {
+                    $response = [
+                        'success' => true,
+                        'message' => 'Ajouté avec succès'
+                    ];
+                } else {
+                    $response = [
+                        'success' => false, 
+                        'message' => 'Échec de l\'ajout'
+                    ];
+                }
+            } else {
+                $response = [
+                    'success' => false, 
+                    'message' => $this->upload->display_errors()
+                ];
+            }
+        } else {
+            // Validation errors
+            $response = [
+                'success' => false, 
+                'message' => validation_errors()
+            ];
+        }
+    
+        // Send JSON response
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+    
+    public function createCompetitionDept()
+    {
+        // Initialize the response
+        $validator = array('success' => false, 'messages' => array());
+    
+        // Validate inputs
+        $this->form_validation->set_rules('nom', 'Nom Compétition', 'required');
+        $this->form_validation->set_rules('date_debut', 'Date début', 'required');
+        $this->form_validation->set_rules('date_fin', 'Date fin', 'required');
+        
+        if ($this->form_validation->run() === true) {
+            // Check if a file is uploaded
+            if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
+                // Configure file upload settings
+                $upload_config = array(
+                    'upload_path' => './assets/assets/images',
+                    'allowed_types' => 'png|jpg|jpeg',
+                    'max_size' => 4000,
+                    'file_name' => uniqid() . '_' . $_FILES['photo']['name'] // Generate a unique file name
+                );
+    
+                $this->load->library("upload", $upload_config);
+    
+                if ($this->upload->do_upload('photo')) {
+                    // Get the uploaded file's data
+                    $upload_data = $this->upload->data();
+                    $photo = base_url('assets/assets/images/' . $upload_data['file_name']);
+    
+                    // Prepare the data to insert
+                    $insert_data = array(
+                        'nom' => $this->input->post('nom'),
+                        'date_debut' => $this->input->post('date_debut'),
+                        'date_fin' => $this->input->post('date_fin'),
+                        'description' => $this->input->post('description'),
+                        'photo' => $photo,
+                        'created_at' => date("Y-m-d")
+                    );
+    
+                    // Insert data into the database
+                    $status = $this->model_news->createCompetitionDept($insert_data);
+    
+                    if ($status) {
+                        $validator = array('success' => true, 'messages' => 'Compétition soumise avec succès');
+                    } else {
+                        $validator = array('success' => false, 'messages' => 'Erreur lors de la soumission de la compétition');
+                    }
+                } else {
+                    // If the file upload fails, return the error message
+                    $validator = array('success' => false, 'messages' => $this->upload->display_errors());
+                }
+            } else {
+                // If no file is selected, return an error message
+                $validator = array('success' => false, 'messages' => 'Veuillez sélectionner un fichier photo.');
+            }
+        } else {
+            // If validation fails, return the validation errors
+            $validator = array('success' => false, 'messages' => validation_errors());
+        }
+    
+        // Return the response as JSON
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($validator);
+        exit;  // Ensure no further code executes
+    }
+    
+
     public function fetchDataNews()
     {
         $moduleData = $this->model_news->fetchDataNews();
@@ -112,6 +261,45 @@ class News extends CI_Controller
         }
         echo json_encode($result);
     }
+    public function fetchDataNewsDept()
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+        $moduleData = $this->model_news->fetchDataNewsDept($dept_id);
+        $result = array('data' => array());
+
+        foreach ($moduleData as $key => $value) {
+            $button = '
+                <div class="actions d-flex align-items-center">
+                    <button type="button" class="btn btn-sm btn-primary action-button m-2" 
+                        data-target="#ViewSubjectModal" onclick="ViewSubject(' . $value['id'] . ')" data-toggle="modal">
+                        <i class="icofont-eye"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger action-button m-2" 
+                        data-toggle="modal" data-target="#removeSoumission" onclick="removeSubject(' . $value['id'] . ')">
+                        <i class="icofont-trash"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-warning action-button m-2" 
+                        data-target="#editModal" onclick="editSubject(' . $value['id'] . ')">
+                        <i class="icofont-edit"></i>
+                    </button>
+                </div>
+            ';
+
+
+
+            $result['data'][$key] = array(
+                $value['id'],
+                //$nom . ' ' . $prenom,
+                $value['titre'],
+                $button
+
+
+            );
+
+        }
+        echo json_encode($result);
+    }
+
     public function get_news($id)
     {
         $news = $this->model_news->getNews($id);
@@ -568,6 +756,8 @@ class News extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($validator);
     }
+    
+      
     function subscribeCompMail()
     {
         $validator = array('success' => false, 'messages' => array());
@@ -775,6 +965,55 @@ class News extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
+
+    public function fetchDataCompetitonsDept()
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+
+        $moduleData = $this->model_news->fetchDataCompetitonsDept( $dept_id);
+        $result = array('data' => array());
+
+        foreach ($moduleData as $key => $value) {
+            $button = '
+            <div class="actions d-flex align-items-center">
+                <button type="button" class="btn btn-sm btn-primary action-button m-2" 
+                    data-target="#ViewSubjectModal" onclick="ViewSubject(' . $value['id'] . ')" data-toggle="modal">
+                    <i class="icofont-eye"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-danger action-button m-2" 
+                    data-toggle="modal" data-target="#removeSoumission" onclick="removeSubject(' . $value['id'] . ')">
+                    <i class="icofont-trash"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-warning action-button m-2" 
+                    data-target="#editModal" onclick="editSubject(' . $value['id'] . ')">
+                    <i class="icofont-edit"></i>
+                </button>
+            </div>
+        ';
+        
+
+            $subscribers = ' <div style="justify-content: center !important; display: flex;">
+                    <button type="button" class="btn btn-sm btn-info action-button" data-target="#ViewSubscribersModal" onclick="ViewSubscribers(' . $value['id'] . ')" data-toggle="modal"><i class="icofont-eye"></i>
+                    </button>
+                </div>';
+
+
+
+            $result['data'][$key] = array(
+                $value['id'],
+                //$nom . ' ' . $prenom,
+                $value['nom'],
+                $subscribers,
+                $button
+
+
+            );
+
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+    }
     public function removeEvents($id)
     {
         $is_deleted = $this->model_news->removeEvents($id);
@@ -902,6 +1141,49 @@ class News extends CI_Controller
     public function fetchDataInscrits()
     {
         $moduleData = $this->model_news->fetchDataCompetitons();
+        $result = array('data' => array());
+
+        foreach ($moduleData as $key => $value) {
+          
+            $info = '
+               <div style="justify-content: center !important; display: flex;" class="actions">
+                <button type="button" class="btn btn-sm btn-primary action-button" data-target="#ViewSubjectModal" onclick="ViewSubject(' . $value['id'] . ')" data-toggle="modal"><i class="icofont-eye"></i>
+                </button>
+               </div>
+            ';
+
+            $subscribersAccepted = ' <div style="justify-content: center !important; display: flex;">
+                    <button type="button" class="btn btn-sm btn-info action-button" data-target="#ViewSubscribersAcceptedModal" onclick="ViewSubscribersAccepted(' . $value['id'] . ')" data-toggle="modal"><i class="icofont-eye"></i>
+                    </button>
+                </div>';
+
+            $subscribersRefused = ' <div style="justify-content: center !important; display: flex;">
+                    <button type="button" class="btn btn-sm btn-info action-button" data-target="#ViewSubscribersRefusedModal" onclick="ViewSubscribersRefused(' . $value['id'] . ')" data-toggle="modal"><i class="icofont-eye"></i>
+                    </button>
+                </div>';
+
+
+
+            $result['data'][$key] = array(
+            
+                $value['nom'],
+                $subscribersAccepted,
+                $subscribersRefused,
+                $info
+
+
+            );
+
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+    }
+    public function fetchDataInscritsDept()
+    {
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+
+        $moduleData = $this->model_news->Dept($dept_id);
         $result = array('data' => array());
 
         foreach ($moduleData as $key => $value) {

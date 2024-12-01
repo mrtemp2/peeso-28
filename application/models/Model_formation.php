@@ -74,6 +74,15 @@ class Model_formation extends CI_Model
                   ->result_array()  
                     ;       
     }
+    public function fetchFormationDataDept($dept_id){
+        return  $this->db->select('f.*,concat(e.nom,e.prenom) as formateur')
+                  ->from('formations f')
+                  ->join('enseignant e','f.referent_id=e.id')
+                  ->where('f.etab_id', $dept_id)
+                  ->get()
+                  ->result_array()  
+                    ;       
+    }
     
     public function updateFormation($id,$formation){
         $updated = $this->db->where('id',$id)->update('formations',$formation);
@@ -200,30 +209,31 @@ class Model_formation extends CI_Model
 
     }
     public function getFormation($id)
-    {
-        // Fetch the tuteur's details
-        $formation = $this->getFormationById($id); // Get tuteur data
-    
-        if ($formation) {
-           $domaines = $this->db->select('*')->from('domaine')->get()->result_array();
-           $domaines_ids = array();
-           $formationDomaines = $this->db->select('*')->from('formations_domaines')->where('formation_id',$id)->get()->result_array();
-            foreach($formationDomaines as $r){
-                $domaines_ids[]=$r['domaine_id'];
-
-            }
-           return [
-                'formation'=>$formation,
-                'domaine_ids'=>$domaines_ids,
-                'domaines'=>$domaines
-            ];
-        }
-        else{
+{
+    $formation = $this->getFormationById($id);
+    if ($formation) {
+        $domaines = $this->db->select('*')->from('28_2024_domaine')->get();
+        if (!$domaines) {
+            log_message('error', 'Failed to fetch domaines: ' . $this->db->last_query());
             return null;
         }
-    
-       
+        else{
+            log_message('ok no error', 'domaines: ' . $this->db->last_query());
+        }
+        $domaines_ids = [];
+        $formationDomaines = $this->db->select('*')->from('formations_domaines')->where('formation_id', $id)->get()->result_array();
+        foreach ($formationDomaines as $r) {
+            $domaines_ids[] = $r['domaine_id'];
+        }
+        return [
+            'formation' => $formation,
+            'domaine_ids' => $domaines_ids,
+            'domaines' => $domaines->result_array()
+        ];
+    } else {
+        return null;
     }
+}
     public function getIninvitedStudents($formationId){
         $alreadyInvited = $this->db->select('eg.etudiant_id,fg.progression')
                                     ->from('etudiants_groupes eg')
@@ -321,6 +331,17 @@ class Model_formation extends CI_Model
                          ->result_array();
 
 
+    }
+
+    public function fetchNotAcceptedDemandesFormationDept($dept_id) {
+        return $this->db->select('df.id as demande_id, e.*, f.nom as formation_name')
+                        ->from('demandes_formation df')
+                        ->join('etudiants e', 'df.etudiant_id = e.id')
+                        ->join('formations f', 'df.formation_id = f.id')
+                        ->where('df.accepted', false)
+                        ->where('f.etab_id', $dept_id) // Add condition for etab_id
+                        ->get()
+                        ->result_array();
     }
     public function getAcceptedDemandesFormation(){
         return $this->db->select('df.id as demande_id,e.*,f.nom as formation_name')

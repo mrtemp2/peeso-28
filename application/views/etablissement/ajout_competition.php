@@ -7,7 +7,7 @@
         
         <hr class="mt-40"> 
         <div class="col-xl-12">
-            <form class="form-horizontal" action="<?= base_url() ?>news/createCompetition" enctype="multipart/form-data" method="post" id="getAttendanceForm">
+        <form class="form-horizontal" enctype="multipart/form-data" id="addComptForm">
                 <div class="row">
                     <div class="col-xl-6">
                         <div class="contact__input__wraper">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="messages"></div>
+                <div id ="messageContainer" class="messages"></div>
                 <center>
                 <button type="submit" class="btn btn-primary">Soumettre</button>
                 </center>
@@ -68,53 +68,7 @@
     </div>
 </div>
     <script>
-        $("#getAttendanceForm").unbind('submit').bind('submit', function(event) {
-            event.preventDefault();
-            $(".messages").html(''); // Clear any previous messages
-
-            var form = $(this);
-            var url = form.attr('action');
-            var type = form.attr('method');
-            var formData = new FormData(form[0]);
-
-            fetch(url, {
-                method: type,
-                body: formData,
-                cache: 'no-cache'
-            })
-            .then(response => response.json()) // Parse JSON response
-            .then(response => {
-                if (response.success) {
-                    // Display success message
-                    $(".messages").html(
-                        '<div class="alert alert-success alert-dismissible" role="alert">' +
-                        'Compétition soumis avec succès' +
-                        '</div>'
-                    );
-
-                    // Reset the form
-                    $("#getAttendanceForm")[0].reset();
-                } else {
-                    // Display error or validation messages
-                    $(".messages").html(
-                        '<div class="alert alert-danger alert-dismissible" role="alert">' +
-                        response.messages +
-                        '</div>'
-                    );
-                }
-            })
-            .catch(error => {
-                console.error("Error submitting the form:", error);
-                $(".messages").html(
-                    '<div class="alert alert-danger alert-dismissible" role="alert">' +
-                    'Une erreur est survenue lors de la soumission' +
-                    '</div>'
-                );
-            });
-
-            return false;
-        });
-
+       
         document.addEventListener("DOMContentLoaded", function () {
             const realFileInput = document.getElementById("real-file");
             const customButton = document.getElementById("custom-button");
@@ -134,5 +88,92 @@
                 }
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Quill editor
+    const quillFr = new Quill('#editor-fr', {
+        placeholder: 'Écrire le contenu en Français...',
+        theme: 'snow'
+    });
+
+    // File selection custom button logic
+    const realFileBtn = document.getElementById('real-file');
+    const customBtn = document.getElementById('custom-button');
+    const customTxt = document.getElementById('custom-text');
+
+    customBtn.addEventListener('click', () => {
+        realFileBtn.click();
+    });
+
+    realFileBtn.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+            customTxt.textContent = this.files[0].name;
+
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('compétiton-photo').src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            customTxt.textContent = 'Aucun fichier choisi';
+        }
+    });
+
+    // Handle form submission
+    document.getElementById("addNewsForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Update the hidden input with Quill content
+        document.getElementById('content-fr').value = quillFr.root.innerHTML;
+
+        const formData = new FormData(this); // Gather form data, including the file
+
+        // Make an AJAX request using jQuery
+        $.ajax({
+            url: '<?= base_url() ?>news/add_newsDept', // Your endpoint to handle the request
+            type: 'POST',
+            data: formData,
+            contentType: false,  // Don't set content type for FormData
+            processData: false,  // Don't process the data
+            success: function (response) {
+                afficherMessage(response.success, response.message);
+                if (response.success && response.redirect) {
+                    window.location.href = response.redirect;
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Erreur:', error);
+                afficherMessage(false, 'Une erreur s\'est produite lors de la soumission.');
+            }
+        });
+    });
+
+    // Function to display messages
+    function afficherMessage(success, message) {
+        const messageContainer = document.getElementById("messageContainer");
+        const messageDiv = document.createElement('div');
+        messageDiv.className = success ? 'alert alert-success' : 'alert alert-danger';
+        messageDiv.textContent = message;
+        messageContainer.innerHTML = ''; // Clear previous messages
+        messageContainer.appendChild(messageDiv);
+
+        // Optional: Auto-hide message after 5 seconds
+        if (success) {
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+                // Reset form
+                document.getElementById("addNewsForm").reset();
+                // Clear Quill editor
+                quillFr.root.innerHTML = '';
+                document.getElementById('compétiton-photo').src = ''; // Clear the preview image
+            }, 5000);
+        }
+    }
+});
+
+
+    
+
+ 
     </script>
     

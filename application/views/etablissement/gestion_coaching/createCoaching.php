@@ -38,7 +38,7 @@ $students = $info['students'];
                             
         </div>
       
-        <form method="post" id="createCoachingForm" action="<?=base_url()?>coaching/createCoaching" enctype="multipart/form-data" accept-charset="utf-8">
+        <form method="post" id="createCoachingForm" action="<?=base_url()?>coaching/createCoachingDept" enctype="multipart/form-data" accept-charset="utf-8">
             <div class="row" style="position:relative;min-height: 700px;overflow: hidden;">
                     <div class="row formstep" id="formstep-1" data-step="1">
                         <div class="col-xl-12">

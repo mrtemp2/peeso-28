@@ -9,7 +9,7 @@
     <div class="dashboard__content__wraper">
         <div class="dashboard__section__title" style="display: flex;align-items:center;justify-content:space-between;">
             <h4>Liste Des comptes Administrateurs établissements</h4>
-            <a class="default__button" href="<?= base_url('ajout_actualite') ?>">Ajouter Un Administrateur établissement</a>
+            <a class="default__button" href="<?= base_url('ajout_AdminEtab') ?>">Ajouter Un Administrateur établissement</a>
         </div>
 
 
@@ -57,12 +57,7 @@
                                 <input type="password" id="edit_pwd_fr" name="edit_pwd_fr" placeholder='mot de passe'>
                             </div>
                         </div>
-                        <!-- <div class="col-xl-6">
-                        <div class="contact__input__wraper">
-                        <label for="edit_titre_en">Titre en Anglais :</label>
-                        <input type="text" id="edit_titre_en" name="edit_titre_en" placeholder='Ecrire Le Titre En Anglais'>
-                        </div>
-                    </div> -->
+                        
 
                         <div class="col-xl-12">
                             <div class="contact__input__wraper">
@@ -77,12 +72,7 @@
                                 </select>                           
                              </div>
                         </div>
-                        <!-- <div class="col-xl-12">
-                        <div class="contact__input__wraper">
-                        <label class="form-control-label" for="edit_content_en">Contenu En Anglais: </label>
-                            <textarea name="edit_content_en" id="edit_content_en" cols="30" rows="10" placeholder="Entrez votre Contenu En Anglais ici*"></textarea>
-                        </div>
-                    </div> -->
+                        
 
 
                     </div>

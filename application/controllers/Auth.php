@@ -444,7 +444,8 @@ class Auth extends CI_Controller
             'type' => $user['type'],
             'etudiant_id'=>$user['etudiant_id'],
             'enseignant_id'=>$user['enseignant_id'],
-            'photo' => $user['photo']
+            'photo' => $user['photo'],
+            'etab_id'=>$user['etab_id']
         );
       //  return $user;
         if($user['type']=='Etudiant'){

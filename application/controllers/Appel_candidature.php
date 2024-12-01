@@ -37,7 +37,7 @@ class Appel_candidature extends CI_Controller
                 $photo = base_url('assets/assets/images/' . $upload_data['file_name']);
     
                 // Insert into the database
-                $status = $this->model_appel_candidature->createNewAppelcandidature($photo);
+                $status = $this->model_appel_candidature->createNewAppelcandidatureDept($photo);
     
                 if ($status['success']) {
                     $validator = ['success' => true, 'messages' => 'Appel à candidature soumis avec succès'];
@@ -55,7 +55,42 @@ class Appel_candidature extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($validator);
     }
+    public function createNewAppelcandidatureDept()
+    {
+        $validator = ['success' => false, 'messages' => 'Aucun fichier n\'a été téléchargé']; // Default response
     
+        if (isset($_FILES['photo']['name']) && $_FILES['photo']['name'] != '') {
+            $upload_config = array(
+                'upload_path' => './assets/assets/images',
+                'allowed_types' => 'png|jpg|jpeg',
+                'max_size' => 4000
+            );
+    
+            $this->load->library("upload", $upload_config);
+    
+            if ($this->upload->do_upload('photo')) {
+                $upload_data = $this->upload->data();
+                $photo = base_url('assets/assets/images/' . $upload_data['file_name']);
+    
+                // Insert into the database
+                $status = $this->model_appel_candidature->createNewAppelcandidatureDept($photo);
+    
+                if ($status['success']) {
+                    $validator = ['success' => true, 'messages' => 'Appel à candidature soumis avec succès'];
+                } else {
+                    $validator = ['success' => false, 'messages' => $status['message'] ?? 'Erreur lors de la soumission de l\'appel'];
+                }
+            } else {
+                $validator = ['success' => false, 'messages' => $this->upload->display_errors()];
+            }
+        } else {
+            $validator = ['success' => false, 'messages' => 'Veuillez sélectionner un fichier photo.'];
+        }
+    
+        // Return JSON response
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($validator);
+    }
 
     public function getAppelcandidature(){
         $appel_candidature = $this->model_appel_candidature->getAppelcandidature();
@@ -87,7 +122,37 @@ class Appel_candidature extends CI_Controller
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
-        
+    public function getAppelcandidatureDept(){
+        $dept_id = $this->session->userdata()['logged']['etab_id'];
+        $appel_candidature = $this->model_appel_candidature->getAppelcandidatureDept($dept_id );
+        $result = array('data' => array());
+
+        foreach ($appel_candidature as $key => $value) {
+            $actionButton = '
+                            <div class="actions d-flex">
+                                <button type="button" class="btn btn-sm btn-primary action-button me-2" 
+                                    data-target="#ViewSubjectModal" onclick="ViewSubject(' . $value['id'] . ')" data-toggle="modal">
+                                    <i class="icofont-eye-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-warning action-button" 
+                                    data-target="#updateSubjectModal" onclick="updateSubject(' . $value['id'] . ')" data-toggle="modal">
+                                    <i class="icofont-edit"></i>
+                                </button>
+                            </div>';
+
+
+            $result['data'][$key] = array(
+                $value['nom'],
+                // $value['sujet'],
+                $value['date_debut'],
+                $value['date_fin'],
+                $actionButton,
+            );
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($result);
+    }
     public function getAppels($appel_id){
         $validator = array();
         $appel = $this->model_appel_candidature->getAppels($appel_id);
@@ -109,15 +174,15 @@ class Appel_candidature extends CI_Controller
     public function updateAppelData($moduleId = null)
     {
         $validator = ['success' => false, 'messages' => 'Module ID manquant']; // Default response
-
+    
         if ($moduleId) {
             // Fetch current photo from the database
             $currentAppel = $this->model_appel_candidature->getAppels($moduleId);
             $currentPhoto = $currentAppel ? $currentAppel['photo'] : null;
-
+    
             // Initialize photo variable
             $photo = $currentPhoto; // Start with the current photo
-
+    
             // Check if a new file was uploaded
             if (isset($_FILES['editphoto']['name']) && $_FILES['editphoto']['name'] != '') {
                 $upload_config = array(
@@ -125,14 +190,13 @@ class Appel_candidature extends CI_Controller
                     'allowed_types' => 'png|jpg|jpeg',
                     'max_size' => 4000
                 );
-
+    
                 $this->load->library("upload", $upload_config);
-
+    
                 if ($this->upload->do_upload('editphoto')) {
                     $upload_data = $this->upload->data();
-                    
                     // Create the full path to the uploaded image
-                    $photo = base_url('assets/assets/images/' . $upload_data['file_name']); // Full path to the new uploaded photo
+                    $photo = base_url('assets/assets/images/' . $upload_data['file_name']);
                 } else {
                     // If file upload fails, show error and stop
                     $validator['success'] = false;
@@ -142,24 +206,25 @@ class Appel_candidature extends CI_Controller
                     return;
                 }
             }
-
+    
             // Proceed with updating data using either new or current photo
             $update = $this->model_appel_candidature->updateAppelData($moduleId, $photo);
-            if ($update) {
+    
+            if ($update['success']) {
                 $validator['success'] = true;
                 $validator['messages'] = "Modifié avec succès";
             } else {
                 $validator['success'] = false;
-                $validator['messages'] = "Erreur lors de la modification des informations: " . $update; // Include the error message
+                // Include the error message from the model
+                $validator['messages'] = "Erreur lors de la modification des informations: " . (isset($update['error']) ? $update['error'] : 'Unknown error');
             }
         }
-
+    
         // Return JSON response
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($validator);
     }
-
-
+    
 
     public function getDomaines($id)
     {
