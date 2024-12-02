@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 01, 2024 at 03:45 PM
+-- Generation Time: Dec 02, 2024 at 03:18 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.3.6
 
@@ -1057,6 +1057,39 @@ INSERT INTO `28_2024_certificats` (`id`, `nom`, `date_debut`, `date_fin`, `etudi
 (1, 'certificat cybersecurity updated', '2024-10-17', '2024-12-25', 1, NULL),
 (3, '3D Painting', '2022-03-05', '2022-06-04', 8, NULL),
 (4, 'wordpress', '2024-03-01', '2024-09-06', 15, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `28_2024_clubs`
+--
+
+DROP TABLE IF EXISTS `28_2024_clubs`;
+CREATE TABLE IF NOT EXISTS `28_2024_clubs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom_du_club` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `activites` text COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_de_membres` int NOT NULL,
+  `adresse_complete` text COLLATE utf8mb4_general_ci NOT NULL,
+  `telephone` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `adresse_email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `logo_du_club` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` enum('institutionnelle','locale') COLLATE utf8mb4_general_ci NOT NULL,
+  `id_user` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `adresse_email` (`adresse_email`),
+  KEY `id_user` (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `28_2024_clubs`
+--
+
+INSERT INTO `28_2024_clubs` (`id`, `nom_du_club`, `activites`, `nombre_de_membres`, `adresse_complete`, `telephone`, `adresse_email`, `logo_du_club`, `type`, `id_user`, `created_at`, `updated_at`) VALUES
+(4, 'sport1', 'sport', 501, 'tunis12', '58412410', 't@tt.tttt', 'Screenshot_2024-10-24_194036.png', 'institutionnelle', 11, '2024-12-01 19:18:44', '2024-12-01 21:55:45'),
+(5, 'sport222', 'sport22', 20, 'tunis', '51521521', 't@t.tlm', '798d4a3fb8982c009404541d95624460.png', 'locale', 11, '2024-12-02 08:24:29', '2024-12-02 09:24:29');
 
 -- --------------------------------------------------------
 
@@ -4106,6 +4139,33 @@ INSERT INTO `28_2024_newsletters` (`id`, `subject`, `titre`, `image`, `content`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `28_2024_news_clubs`
+--
+
+DROP TABLE IF EXISTS `28_2024_news_clubs`;
+CREATE TABLE IF NOT EXISTS `28_2024_news_clubs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `titre` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `added_by` int NOT NULL,
+  `publie` tinyint(1) NOT NULL,
+  `created_at` date NOT NULL,
+  `id_club` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_club` (`id_club`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `28_2024_news_clubs`
+--
+
+INSERT INTO `28_2024_news_clubs` (`id`, `content`, `titre`, `image`, `added_by`, `publie`, `created_at`, `id_club`) VALUES
+(2, 'test tttttt', 'Test club sport', '2ffe8f55717e1dde35778e0b8c424dad.png', 0, 1, '2024-12-01', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `28_2024_parameter_bilan_competance_initiateur`
 --
 
@@ -4647,6 +4707,33 @@ INSERT INTO `28_2024_randez_vous_users` (`id`, `user_id`, `randez_vous_id`, `eta
 (3, 22, 2, NULL),
 (4, 22, 3, NULL),
 (5, 27, 3, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `28_2024_rapport_activite`
+--
+
+DROP TABLE IF EXISTS `28_2024_rapport_activite`;
+CREATE TABLE IF NOT EXISTS `28_2024_rapport_activite` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `pdf` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `date_creation` datetime DEFAULT CURRENT_TIMESTAMP,
+  `annee` year NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `id_club` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_club` (`id_club`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `28_2024_rapport_activite`
+--
+
+INSERT INTO `28_2024_rapport_activite` (`id`, `nom`, `pdf`, `date_creation`, `annee`, `description`, `id_club`) VALUES
+(2, 'test', 'e109b978a71a551d62fea8f221944cb8.pdf', '2024-12-02 00:00:00', '2025', 'azda a daz dza az daz az da z d', 4),
+(3, '3', 'a68e092a49783b671e619b13d2473189.pdf', '2024-12-02 00:00:00', '2023', 'ezqzq rze rzqer ez rz za', 5);
 
 -- --------------------------------------------------------
 
@@ -5500,7 +5587,7 @@ CREATE TABLE IF NOT EXISTS `28_2024_users` (
   `compte_incube` tinyint(1) NOT NULL DEFAULT '0',
   `etab_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `28_2024_users`
@@ -5516,7 +5603,7 @@ INSERT INTO `28_2024_users` (`id`, `username`, `password`, `type`, `etudiant_id`
 (7, '99186482', '12395350', 'Etudiant', 5, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
 (8, '76095142', '28688426', 'Etudiant', 6, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
 (9, '18609872', '18109832', 'Etudiant', 7, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
-(11, '11111111', 'Azerty1@', 'Etudiant', 8, NULL, NULL, 0, 'avatar-3.jpg', NULL, '', 0, NULL),
+(11, 'anis1', '123456', 'Administrateur_club', 8, NULL, NULL, 0, 'avatar-3.jpg', NULL, '', 0, NULL),
 (13, 'refrent123', 'Azerty123@@', 'Enseignant', NULL, 5, NULL, 0, 'admin.png', 8, 'academique', 1, NULL),
 (14, '11955440', 'Azerty123@@', 'Etudiant', 9, NULL, NULL, 0, NULL, 7, '', 0, NULL),
 (15, '51115305', '70792740', 'Etudiant', 10, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
@@ -5524,7 +5611,30 @@ INSERT INTO `28_2024_users` (`id`, `username`, `password`, `type`, `etudiant_id`
 (17, '11955470', 'Azerty123@@', 'Etudiant', 12, NULL, NULL, 0, NULL, NULL, '', 0, NULL),
 (18, '11955480', 'Azerty123@@', 'Etudiant', 13, NULL, NULL, 0, NULL, 9, '', 1, NULL),
 (20, 'Balkis', 'Balkis55722**', 'Etudiant', 15, NULL, NULL, 0, '151.png', NULL, '', 0, NULL),
-(23, 'admin', '123456789', 'Administrateur_etab', NULL, NULL, NULL, 0, NULL, NULL, '', 0, 8);
+(23, 'admin', '123456789', 'Administrateur_etab', NULL, NULL, NULL, 0, NULL, NULL, '', 0, 8),
+(24, 'anis', '123456', 'Administrateur_club', NULL, NULL, NULL, 0, NULL, NULL, '', 0, NULL);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `28_2024_clubs`
+--
+ALTER TABLE `28_2024_clubs`
+  ADD CONSTRAINT `28_2024_clubs_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `28_2024_users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `28_2024_news_clubs`
+--
+ALTER TABLE `28_2024_news_clubs`
+  ADD CONSTRAINT `28_2024_news_clubs_ibfk_1` FOREIGN KEY (`id_club`) REFERENCES `28_2024_clubs` (`id`);
+
+--
+-- Constraints for table `28_2024_rapport_activite`
+--
+ALTER TABLE `28_2024_rapport_activite`
+  ADD CONSTRAINT `28_2024_rapport_activite_ibfk_1` FOREIGN KEY (`id_club`) REFERENCES `28_2024_clubs` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

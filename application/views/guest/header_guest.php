@@ -284,8 +284,8 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
                                                 <i class="icofont-rounded-down"></i>
                                             </a>
                                             <ul class="headerarea__submenu">
-                                                <li><a href="<?php echo base_url() ?>fiche_club">Fiche Club</a></li>
-                                                <li><a href="<?php echo base_url() ?>rapport_activite">Rapport D'activité</a></li>
+                                                <li><a href="<?php echo base_url() ?>institutionnel">institutionnel</a></li>
+                                                <li><a href="<?php echo base_url() ?>local">local</a></li>
                                                 <li><a href="<?php echo base_url() ?>actualite_evenement">Actualités & Événements</a></li>
                            
                                             </ul>

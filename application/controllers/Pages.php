@@ -15,14 +15,14 @@ class Pages extends CI_Controller
             'header'=>'admin/header_admin',
             'footer'=>'admin/footer_admin',
             'routes'=>array(
-                'dashboard','appel_a_candidature','liste_appel_candidature','list_referents','gestion_etablissement','misejour_compte_admin','liste_capsules_videos',
+                'dashboard','liste_comp_club_association','appel_a_candidature','liste_appel_candidature','list_referents','gestion_etablissement','misejour_compte_admin','liste_capsules_videos',
                 'demandes_creation_projets','details_projects_etudiant','list_actualite','ajout_actualite','liste_newsletters','ajout_newsletter','liste_subscribers',
                 'liste_projets_acceptes','liste_projets_en_cours_d_etudes','ajout_evenement','liste_evenements','ajout_competition','liste_competitions','liste_inscrits_accepte_refuse','rendez_vous_calendar',
                 'liste_projets_1er_validation','liste_projets_initiateurs','liste_projets_innovateurs','liste_projets_promoteurs','liste_projets_refuses','liste_etudiant',
                 'commite_selection','liste_rendez_vous_comite','randez-vous','echanges_history','project_non_affecte_initiateur','project_non_affecte_innovateur','project_non_affecte_promoteur',
                 'project_affecte_initiateur','project_affecte_innovateur','project_affecte_promoteur','mise_a_jour_profile_admin','profile_referent','demande_formation_en_cours','all_formations',
-                'list_structure_appui','detail_formation','update_formation','profile_etudiant','details_randez_vous','gestion_stage_emploi','demande_coaching_en_cours','all_coaching',
-                'detail_coaching','list_comp_etab','ajout_AdminEtab'
+                'list_structure_appui','detail_formation','update_formation','profile_etudiant','details_randez_vous','gestion_stage_emploi','demande_coaching_en_cours','all_coaching','list_club','list_act_even','rapport_activite','ajout_activite',
+                'detail_coaching','list_comp_etab','ajout_AdminEtab','ajout_AdminClub'
             ),
             'pagelocations'=>[
                 'dashboard'=>'admin/dashboard',
@@ -79,7 +79,14 @@ class Pages extends CI_Controller
                 'all_coaching'=>'admin/all_coaching',
                 'detail_coaching'=>'admin/detail_coaching',
                 'list_comp_etab'=>'admin/list_comp_etab',
-                'ajout_AdminEtab'=>'admin/ajout_AdminEtab'
+                'ajout_AdminEtab'=>'admin/ajout_AdminEtab',
+                'liste_comp_club_association'=>'admin/liste_comp_club_association',
+                'ajout_AdminClub'=>'admin/ajout_AdminClub',
+                'list_club'=>'admin/list_club',
+                'list_act_even'=>'admin/list_act_even',
+                'rapport_activite'=>'admin/rapport_activite',
+                'ajout_activite'=> 'admin/ajout_activite',
+
             ]
         ],
         'Etudiant'=>[
@@ -196,7 +203,7 @@ class Pages extends CI_Controller
             'footer'=>'guest/footer_guest',
             'routes'=>array(
                 'acceuil','capsules_videos','appel_a_candidature_active','actualite', 'contactez_nous','evenement','sinscrire_evenement','competition','sinscrire_competition',
-                'qui_sommes_nous','nos_objectifs','reseau_4c','stage_emploi'
+                'qui_sommes_nous','nos_objectifs','reseau_4c','stage_emploi','institutionnel','local','actualite_evenement','actualite_club','evenement_club'
             ),
             'pagelocations'=>[
                 'acceuil'=>'guest/acceuil',
@@ -211,7 +218,12 @@ class Pages extends CI_Controller
                 'qui_sommes_nous'=>'guest/qui_sommes_nous',
                 'nos_objectifs'=>'guest/nos_objectifs',
                 'reseau_4c' => 'guest/reseau_4c',
-                'stage_emploi'=>'guest/stage_emploi'
+                'stage_emploi'=>'guest/stage_emploi',
+                'institutionnel'=> 'guest/institutionnel',
+                'local'=> 'guest/local',
+                'actualite_evenement' => 'guest/actualite_evenement',
+                'actualite_club' => 'guest/actualite_club',
+                'evenement_club' => 'guest/evenement_club'
                 
             ],
         ],
@@ -282,6 +294,23 @@ class Pages extends CI_Controller
                 
             ]
         ],
+        'Administrateur_club'=>[
+            'header'=>'club/header_admin',
+            'footer'=>'club/footer_admin',
+            'routes'=>array(
+                'dashboard','list_club','list_act_even','rapport_activite','ajout_activite'
+            ),
+
+            'pagelocations'=>[
+                'dashboard'=>'club/dashboard',
+                'list_club'=>'club/list_club',
+                'list_act_even'=>'club/list_act_even',
+                'rapport_activite'=>'club/rapport_activite',
+                'ajout_activite'=> 'club/ajout_activite',
+            ],
+            
+
+        ],
 
     ];
     function __construct()
@@ -305,6 +334,9 @@ class Pages extends CI_Controller
        $this->load->model('model_emploi_stage');
        $this->load->model('model_user');
        $this->load->model('model_domaine');
+       $this->load->model('model_clubs');
+       $this->load->model('model_news_clubs');
+       $this->load->model('model_rapport_activite');
        $this->load->database();
     }
     public function view($page='acceuil'){
@@ -331,10 +363,10 @@ class Pages extends CI_Controller
                 $userType = 'guest';
             }
 
-            if($userType=='Administrateur' || $userType=='Etudiant' || $userType=='Enseignant' || $userType=='Enseignant_Professionnel'|| $userType=='Administrateur_etab'){
+            if($userType=='Administrateur' || $userType=='Etudiant' || $userType=='Enseignant' || $userType=='Enseignant_Professionnel'|| $userType=='Administrateur_etab'|| $userType=='Administrateur_club'){
                 if($page == 'acceuil' || $page == 'capsules_videos' || $page == 'appel_a_candidature_active'|| $page =='actualite' || $page == 'contactez_nous' || $page == 'evenement'
                    || $page == 'sinscrire_evenement' || $page == 'competition'|| $page == 'sinscrire_competition'|| $page =='nos_objectifs' || $page == 'qui_sommes_nous'||$page =='reseau_4c'
-                   || $page == 'stage_emploi'
+                   || $page == 'stage_emploi' || $page == 'institutionnel' || $page == 'local' || $page == 'actualite_evenement'|| $page == 'actualite_club' || $page == 'evenement_club'
                 ){
 
                     $appel = $this->model_appel_candidature->getAppelcandidatureStat();
@@ -895,9 +927,29 @@ class Pages extends CI_Controller
 
 
     }
+    public function view_pdf($filename) {
+        $file_path = FCPATH . 'path/to/your/pdf/folder/' . $filename;
+        
+        if (file_exists($file_path)) {
+            // Set appropriate headers for PDF
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            readfile($file_path);
+        } else {
+            show_404(); // Show 404 if file not found
+        }
+    }
 
-
-
+    public function page_custom() {
+        // Get the 'id' parameter from the URL
+        $id = $this->input->get('id');  // For CodeIgniter, you can use `$this->input->get('id')` to get the query parameter
+    
+        // Fetch the data for the custom page based on 'id'
+        $data['custom_page'] = $this->guest_model->get_page_by_id($id);
+    
+        // Load the view with the custom data
+        $this->load->view('guest/page_custom', $data);
+    }
 
 
 }

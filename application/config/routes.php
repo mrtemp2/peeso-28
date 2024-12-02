@@ -71,4 +71,5 @@ $route['Users/update_User'] = 'Users/update_User';
 $route['Users/removeUser'] = 'Users/removeUser';
 $route['Users/add_EtabUsers'] = 'Users/add_EtabUsers';
 $route['emploiStage/fetchOffreDataDept'] = 'emploiStage/fetchOffreDataDept';
+$route['pdf/(:any)'] = 'pages/view_pdf/$1';
 

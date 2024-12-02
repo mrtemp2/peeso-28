@@ -78,7 +78,6 @@
              var manageModuleTable;
  
 window.addEventListener('load',function() {
-    console.log('bitch')
     
     manageModuleTable = $("#manageModuleTable").DataTable({
         columns: [{ width: '17%' },{ width: '18%' },{ width: '20%' }, { width: '20%' },{ width: '25%' }],

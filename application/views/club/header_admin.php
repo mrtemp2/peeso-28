@@ -1,13 +1,14 @@
 <?php 
 $etabs = $this->model_etablissement->getAllActiveEtabs();
 ?>
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Espace Conseiller | PEESo</title>
+    <title>Espace Admin | PEESo</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -41,6 +42,10 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
         function overlayOff(){
             document.querySelector('#overlay').style.display="none"
         }
+        function closeModal(modalId){
+            $(`${modalId}`).modal('hide')
+
+        }
 
     </script>
     <script>
@@ -64,13 +69,6 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
 
 
 <style>
-       .google-apple-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 30px;
-        }
         .activity-title{
             font-weight: 700;
             font-size: 0.9rem;
@@ -407,6 +405,16 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
         font-size: 14px !important;
         padding-right: 1px !important;
     }
+      select{
+        height: 60px;
+        width: 100%;
+        padding-left: 27px;
+        border: 1px solid #dddddd;
+        margin-bottom: 30px;
+        border-radius: var(--borderRadius);
+        background: transparent;
+        color: #5F6C76;
+      }
 </style>
 <body class="body__wrapper">
     <div id="overlay">
@@ -509,7 +517,7 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
                                 </div>
 
                             </div>
-                        </div>
+                        </div> 
                         
                         <div class="col-xl-10 col-lg-10 main_menu_wrap">
                             <div class="headerarea__main__menu">
@@ -614,7 +622,7 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
                             </div>
                         </div>
                         <div class="col-xl-1 col-lg-1 col-md-6" style="justify-content: center;display: flex;justify-items: center;align-items: center;">
-                            <span class="btn btn-primary">Conseiller</span>
+                            <span class="btn btn-primary"><?= $this->session->userdata('logged')['type'] ?></span>
                         </div>
 
                     </div>
@@ -1017,38 +1025,28 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
                                                     </svg>
                                                     Dashboard</a>
                                             </li>
-                                            <li class="toggle-menu-item">
-                                                <a href="#" class="parent-menu-item" data-toggle="collapse" data-target="#gestion_demande"  >
-                                                    <div>
+                                           
+                                           
+                                           
+                                            <li>
+                                                <a href="#" class="parent-menu-item" data-toggle="collapse" data-target="#gestion_club">
+                                                    <i class="icofont-star-shape"></i>
+                                                    Gestion des clubs & Associations <i class="icofont-rounded-down"></i></a> 
+                                                    <div class="menu-item-children collapse in" id="gestion_club">
+                                                    <a style="font-size: 0.9rem;" href="<?=base_url('list_club')?>">
                                                     <i class="icofont-list"></i>
-                                                    Demandes 
-                                                    </div>
-                                                    <i class="icofont-rounded-down"></i>
-                                                </a>
-                                                <div class="menu-item-children collapse in" id="gestion_demande">
-                                                    <a style="font-size: 0.9rem;" href="<?=base_url('demande_formation_referents')?>">
-                                                    <i class="icofont-book"></i>
-                                                    Formations</a>
-                                                    <a style="font-size: 0.9rem;" href="#">
+                                                    Liste des clubs & Associations</a>
+                                                    
+                                                    <a style="font-size: 0.9rem;" href="<?=base_url('list_act_even')?>">
                                                     <i class="icofont-black-board"></i>
-                                                    Caoching</a>
-                                                </div>    
+                                                    Actualités & Événement </a>
+                                                    <a style="font-size: 0.9rem;" href="<?=base_url('rapport_activite')?>">
+                                                    <i class="icofont-paperclip"></i>
+                                                    Rapport D'activité </a>
+                                                </div>
                                             </li>
-                                            <li>
-                                                <a href="<?=base_url('all_formations_referent')?>">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-bookmark">
-                                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                                    </svg>
-                                                    Mes Formations</a>
-                                            </li>
-                                            <li>
-                                                <a href="<?=base_url('randez_vous_referent')?>">
-                                                <i class="icofont-ui-calendar"></i>
-                                                    Rendez Vous</a>
-                                            </li>
+                                           
+
                                         </ul>
                                     </div>
 
@@ -1059,7 +1057,7 @@ $etabs = $this->model_etablissement->getAllActiveEtabs();
                                     <div class="dashboard__nav">
                                         <ul>
                                             <li>
-                                                <a href="<?=base_url('misejour_compte_referent')?>">
+                                                <a href="<?=base_url('mise_a_jour_profile_admin')?>">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

@@ -1,4 +1,3 @@
-
 <?php 
 $adder_id = $this->session->userdata['logged']['id'];
 $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
@@ -9,7 +8,7 @@ $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
 <div class="col-xl-9 col-lg-9 col-md-12">
     <div class="dashboard__content__wraper">
         <div class="dashboard__section__title" style="display: flex;align-items:center;justify-content:space-between;">
-            <h4>Ajouter Actualité</h4>
+            <h4>Ajouter Activité</h4>
         </div>
 
         
@@ -19,12 +18,12 @@ $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
             <div class="row">
                 <div class="col-xl-12">
                     <div class="contact__input__wraper">
-                        <input type="text" id="titre-fr" name="titre-fr" placeholder="Titre de l'actualité">
+                        <input type="text" id="titre-fr" name="titre-fr" placeholder="Titre de l'activité">
                     </div>
                 </div>
                 <div class="col-xl-12">
                     <div class="contact__input__wraper">
-                        <label class="form-control-label" for="real-file">Photo de l'actualité: </label>
+                        <label class="form-control-label" for="real-file">Document Activité: </label>
                         <div style="
                             border: 0.1px solid #dddddd;
                             margin: 0 0 30px 0;
@@ -33,11 +32,10 @@ $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
                         ">
                             <div class="course-thumbnail-upload-area">
                                 <div class="thumbnail-area" style="height:100px">
-                                    <img id="compétiton-photo" style="max-height:100%" src="<?= base_url()."public/new/images/dashboard/05.png" ?>" alt="appel">
+                                    <img id="compétiton-photo" style="max-height:100%" src="<?= base_url()."public/new/images/dashboard/pdf.png" ?>" alt="appel">
                                 </div>
                                 <div class="information">
-                                    <span>Size: 700 X 430 Pixels</span> <br>
-                                    <span>File Support: PNG, JPG, JPEG</span>
+                                    <span>File Support: pdf</span>
                                     <div class="input-file-type-btn">
                                         <input type="file" id="real-file" name="image" hidden />
                                         <button type="button" class="btn btn-primary" id="custom-button">Choisir Un Fichier</button>
@@ -46,6 +44,11 @@ $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-xl-12">
+                    <div class="contact__input__wraper">
+                        <input type="number" id="annee" name="annee" placeholder="annee de l'activité">
                     </div>
                 </div>
                 <div class="contact__input__wraper">
@@ -64,6 +67,7 @@ $clubs = $this->model_clubs->get_clubs_by_user($adder_id) ;
                         <textarea name="content-fr" id="content-fr" cols="30" rows="10" placeholder="Contenu de l'actualité"></textarea>
                     </div>
                 </div>
+                
             </div>
             <div id="messageContainer" class="messages"></div>
             <center>
@@ -85,7 +89,7 @@ document.getElementById("addNewsForm").addEventListener("submit", function(event
 
     // Make an AJAX request using jQuery
     $.ajax({
-        url: '<?= base_url() ?>news_club/add_news_club', // Your endpoint to handle the request
+        url: '<?= base_url() ?>rapport_activite/add_activite_club', // Your endpoint to handle the request
         type: 'POST',
         data: formData,
         contentType: false,  // Don't set content type for FormData
